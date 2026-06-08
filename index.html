@@ -507,41 +507,59 @@
     <h2 class="section-title">Guest List</h2>
     <div class="section-line"></div>
 
-    <div class="guest-stats" id="guest-stats"></div>
-
-    <div class="guest-controls">
-      <input type="text" id="guest-search" placeholder="Search guests…" oninput="filterGuests()">
-      <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
-      <button class="btn btn-sm" onclick="window.print()">🖨 Print List</button>
+    <!-- PIN GATE -->
+    <div id="pin-gate" style="max-width:340px;margin:0 auto;text-align:center;">
+      <p style="color:var(--text-light);margin-bottom:1.5rem;font-size:0.95rem;line-height:1.7;">
+        This section is private.<br>Enter your PIN to manage the guest list.
+      </p>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-bottom:1rem;">
+        <input type="password" id="pin-input" maxlength="10"
+          placeholder="Enter PIN"
+          style="padding:0.75rem 1rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:1.1rem;text-align:center;width:160px;font-family:Lato,sans-serif;outline:none;background:var(--cream);"
+          onkeydown="if(event.key==='Enter') checkPin()">
+        <button class="btn" style="width:auto;padding:0.75rem 1.5rem" onclick="checkPin()">Unlock</button>
+      </div>
+      <p id="pin-error" style="color:#c0392b;font-size:0.85rem;display:none;">Incorrect PIN — please try again.</p>
     </div>
 
-    <div class="table-wrap">
-      <table id="guest-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Party Size</th>
-            <th>RSVP</th>
-            <th>Notes</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="guest-tbody"></tbody>
-      </table>
-    </div>
-
-    <div class="add-guest-row">
-      <input type="text" id="ag-name" placeholder="Guest name *">
-      <input type="email" id="ag-email" placeholder="Email (optional)">
-      <select id="ag-attending">
-        <option value="pending">Pending</option>
-        <option value="yes">Attending</option>
-        <option value="no">Not attending</option>
-      </select>
-      <input type="number" id="ag-guests" placeholder="Party size" min="1" max="10" value="1" style="max-width:110px">
-      <input type="text" id="ag-notes" placeholder="Notes">
-      <button class="btn btn-sm" onclick="addGuest()">+ Add</button>
+    <!-- GUEST LIST CONTENT (hidden until PIN entered) -->
+    <div id="guest-content" style="display:none;">
+      <div style="text-align:right;margin-bottom:1rem;">
+        <button class="btn btn-outline btn-sm" onclick="lockGuests()">🔒 Lock</button>
+      </div>
+      <div class="guest-stats" id="guest-stats"></div>
+      <div class="guest-controls">
+        <input type="text" id="guest-search" placeholder="Search guests…" oninput="filterGuests()">
+        <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn btn-sm" onclick="window.print()">🖨 Print List</button>
+      </div>
+      <div class="table-wrap">
+        <table id="guest-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Party Size</th>
+              <th>RSVP</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="guest-tbody"></tbody>
+        </table>
+      </div>
+      <div class="add-guest-row">
+        <input type="text" id="ag-name" placeholder="Guest name *">
+        <input type="email" id="ag-email" placeholder="Email (optional)">
+        <select id="ag-attending">
+          <option value="pending">Pending</option>
+          <option value="yes">Attending</option>
+          <option value="no">Not attending</option>
+        </select>
+        <input type="number" id="ag-guests" placeholder="Party size" min="1" max="10" value="1" style="max-width:110px">
+        <input type="text" id="ag-notes" placeholder="Notes">
+        <button class="btn btn-sm" onclick="addGuest()">+ Add</button>
+      </div>
     </div>
   </div>
 </section>
@@ -624,6 +642,28 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ─── PIN PROTECTION ─── */
+const GUEST_PIN = '2027'; // Change this to your preferred PIN
+function checkPin() {
+  const val = document.getElementById('pin-input').value;
+  if (val === GUEST_PIN) {
+    document.getElementById('pin-gate').style.display = 'none';
+    document.getElementById('guest-content').style.display = 'block';
+    sessionStorage.setItem('guest_unlocked', '1');
+    renderGuests();
+  } else {
+    document.getElementById('pin-error').style.display = 'block';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+  }
+}
+function lockGuests() {
+  sessionStorage.removeItem('guest_unlocked');
+  document.getElementById('pin-gate').style.display = 'block';
+  document.getElementById('guest-content').style.display = 'none';
+  document.getElementById('pin-input').value = '';
 }
 
 /* ─── GUEST DATA (localStorage) ─── */
@@ -815,6 +855,11 @@ function printQR() {
 
 // Auto-generate a placeholder QR on load
 window.addEventListener('load', () => {
+  // Auto-unlock guest list if already authenticated this session
+  if (sessionStorage.getItem('guest_unlocked') === '1') {
+    document.getElementById('pin-gate').style.display = 'none';
+    document.getElementById('guest-content').style.display = 'block';
+  }
   renderGuests();
   setTimeout(() => {
     if (typeof QRCode !== 'undefined') generateQR();
