@@ -406,9 +406,9 @@
         <div class="detail-icon">💍</div>
         <h3>Ceremony</h3>
         <p>
-          <strong>2:00 PM</strong><br>
-          Details to be confirmed<br>
-          <em style="font-size:0.82rem;color:var(--sage)">Check back soon</em>
+          <strong>1:00 PM</strong><br>
+          Regina Coeli<br>
+          Beverly Hills
         </p>
       </div>
       <div class="detail-card">
@@ -618,7 +618,7 @@
 <script>
 /* ─── COUNTDOWN ─── */
 function updateCountdown() {
-  const wedding = new Date('2027-03-14T14:00:00');
+  const wedding = new Date('2027-03-14T13:00:00');
   const now = new Date();
   const diff = wedding - now;
   if (diff <= 0) {
@@ -761,32 +761,46 @@ function exportCSV() {
   showToast('Guest list exported ✓');
 }
 
-/* ─── RSVP FORM → emails you + shows thank you ─── */
-document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+/* ─── RSVP FORM → Formspree ─── */
+document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const name     = document.getElementById('r-name').value.trim();
-  const email    = document.getElementById('r-email').value.trim();
+  const name      = document.getElementById('r-name').value.trim();
+  const email     = document.getElementById('r-email').value.trim();
   const attending = document.getElementById('r-attending').value;
-  const guests   = document.getElementById('r-guests').value;
-  const notes    = document.getElementById('r-notes').value.trim();
+  const guests    = document.getElementById('r-guests').value;
+  const notes     = document.getElementById('r-notes').value.trim();
   if (!attending) { showToast('Please indicate if you can attend'); return; }
 
   const attendingText = attending === 'yes' ? 'Joyfully accepts ✓' : 'Regretfully declines';
-  const subject = encodeURIComponent(`Wedding RSVP — ${name}`);
-  const body = encodeURIComponent(
-    `New RSVP from your wedding website!\n\n` +
-    `Name: ${name}\n` +
-    `Email: ${email || 'Not provided'}\n` +
-    `Attending: ${attendingText}\n` +
-    `Party size: ${guests}\n` +
-    `Dietary / notes: ${notes || 'None'}\n\n` +
-    `— jacobandashley2027.com`
-  );
-  window.location.href = `mailto:jacob.blundell1@gmail.com?subject=${subject}&body=${body}`;
+  const submitBtn = this.querySelector('button[type="submit"]');
+  submitBtn.textContent = 'Sending…';
+  submitBtn.disabled = true;
 
-  document.getElementById('rsvp-form').style.display = 'none';
-  document.getElementById('rsvp-success').style.display = 'block';
-  showToast('RSVP received! Thank you 🌿');
+  try {
+    const res = await fetch('https://formspree.io/f/mnjyvdyw', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email: email || 'Not provided',
+        attending: attendingText,
+        party_size: guests,
+        dietary_notes: notes || 'None'
+      })
+    });
+
+    if (res.ok) {
+      document.getElementById('rsvp-form').style.display = 'none';
+      document.getElementById('rsvp-success').style.display = 'block';
+      showToast('RSVP received! Thank you 🌿');
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch(err) {
+    submitBtn.textContent = 'Send RSVP';
+    submitBtn.disabled = false;
+    showToast('Something went wrong — please try again');
+  }
 });
 
 /* ─── QR CODE ─── */
