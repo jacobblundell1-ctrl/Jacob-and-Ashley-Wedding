@@ -6,7 +6,6 @@
 <title>Jacob & Ashley — 14 March 2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root {
     --ink: #2e2e28;
@@ -455,7 +454,6 @@
     <a href="#details">The Day</a>
     <a href="#rsvp">RSVP</a>
     <a href="#guests">Guests</a>
-    <a href="#qr">Invites</a>
   </nav>
 </header>
 
@@ -689,53 +687,6 @@
   </div>
 </section>
 
-<!-- ── QR INVITES ── -->
-<section id="qr">
-  <div class="inner">
-    <div class="sec-head">
-      <span class="num">iv.</span>
-      <h2>Invites</h2>
-      <span class="note">QR codes for the printed cards</span>
-    </div>
-    <div class="qr-layout">
-      <div class="qr-intro">
-        <p>Each printed invite carries a small code that brings guests straight to the RSVP form. Enter a guest's name, generate their code, and print the card.</p>
-        <div class="qr-fields">
-          <div>
-            <label for="qr-url">Link</label>
-            <input type="text" id="qr-url" value="https://www.jacobandashley2027.com/#rsvp">
-          </div>
-          <div>
-            <label for="qr-guest-name">Guest name</label>
-            <input type="text" id="qr-guest-name" value="The Smith Family">
-          </div>
-          <div>
-            <label for="qr-size">Size</label>
-            <select id="qr-size">
-              <option value="128">Small</option>
-              <option value="180" selected>Medium</option>
-              <option value="240">Large</option>
-            </select>
-          </div>
-          <div class="qr-buttons">
-            <button class="btn" onclick="generateQR()">Generate</button>
-            <button class="btn btn-ghost" onclick="printQR()">Print card</button>
-          </div>
-        </div>
-      </div>
-      <div class="invite-card" id="invite-card">
-        <svg class="mono-sm" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
-        <h3>Jacob &amp; Ashley</h3>
-        <p class="idate">14 · 03 · 2027</p>
-        <p class="guest" id="qr-card-guest">The Smith Family</p>
-        <div id="qr-canvas"></div>
-        <p class="scan">Scan to reply</p>
-        <p class="url" id="qr-url-display">jacobandashley2027.com</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── FOOTER ── -->
 <footer>
   <svg class="monogram" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
@@ -901,79 +852,6 @@ document.getElementById('rsvp-form').addEventListener('submit', async function(e
   }
 });
 
-/* ── qr ── */
-function generateQR() {
-  const url = document.getElementById('qr-url').value.trim();
-  const guestName = document.getElementById('qr-guest-name').value.trim();
-  const size = parseInt(document.getElementById('qr-size').value);
-  if (!url) { showToast('Enter a link first'); return; }
-
-  const canvas = document.getElementById('qr-canvas');
-  canvas.innerHTML = '';
-  document.getElementById('qr-card-guest').textContent = guestName || 'Our Guest';
-  try {
-    document.getElementById('qr-url-display').textContent = url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
-  } catch(e) {}
-
-  new QRCode(canvas, {
-    text: url, width: size, height: size,
-    colorDark: '#2e2e28', colorLight: '#faf8f3',
-    correctLevel: QRCode.CorrectLevel.M
-  });
-  showToast('Code ready');
-}
-
-function printQR() {
-  const canvas = document.getElementById('qr-canvas');
-  if (!canvas.children.length) { showToast('Generate a code first'); return; }
-  const guestName = escHtml(document.getElementById('qr-card-guest').textContent);
-  const displayUrl = escHtml(document.getElementById('qr-url-display').textContent);
-  const qrHtml = canvas.innerHTML;
-  const w = window.open('', '_blank');
-  w.document.write(`<!DOCTYPE html>
-<html><head><title>Invite — Jacob &amp; Ashley</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  @page { size: A5; margin: 0; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',sans-serif; background:#faf8f3; display:flex; justify-content:center; align-items:center; min-height:100vh; }
-  .card { width:148mm; min-height:210mm; padding:16mm 14mm; text-align:center;
-          display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; }
-  .frame { position:absolute; inset:8mm; border:1px solid #6e8666; }
-  .frame2 { position:absolute; inset:10.5mm; border:0.5px solid #ac9059; opacity:0.5; }
-  .mono { width:64px; height:64px; margin-bottom:8mm; color:#4f6349; }
-  h1 { font-family:'Libre Caslon Text',serif; font-weight:500; font-size:26pt; color:#2e2e28; }
-  .date { font-size:7.5pt; letter-spacing:0.3em; color:#6d6d62; text-transform:uppercase; margin:3mm 0 8mm; }
-  .rule { width:36px; height:1px; background:#ac9059; margin:0 auto 8mm; }
-  .dear { font-size:7pt; letter-spacing:0.2em; text-transform:uppercase; color:#6d6d62; margin-bottom:2mm; }
-  .guest { font-family:'Libre Caslon Text',serif; font-style:italic; font-size:15pt; color:#2e2e28; margin-bottom:8mm; }
-  .qr { background:white; padding:10px; display:inline-block; margin-bottom:4mm; border:1px solid #e3ddcf; }
-  .scan { font-size:6.5pt; letter-spacing:0.24em; text-transform:uppercase; color:#4f6349; margin-bottom:1.5mm; }
-  .url { font-size:6.5pt; color:#6d6d62; }
-</style></head><body>
-<div class="card">
-  <div class="frame"></div><div class="frame2"></div>
-  <svg class="mono" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1.4"/>
-    <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
-    <text x="32" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">J</text>
-    <text x="50" y="66" font-family="Libre Caslon Text, serif" font-size="20" fill="currentColor" text-anchor="middle" opacity="0.65">&amp;</text>
-    <text x="68" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">A</text>
-  </svg>
-  <h1>Jacob &amp; Ashley</h1>
-  <p class="date">Sunday · 14th March 2027</p>
-  <div class="rule"></div>
-  <p class="dear">Dear</p>
-  <p class="guest">${guestName}</p>
-  <div class="qr">${qrHtml}</div>
-  <p class="scan">Scan to reply</p>
-  <p class="url">or visit ${displayUrl}</p>
-</div>
-</body></html>`);
-  w.document.close();
-  setTimeout(() => w.print(), 900);
-}
-
 /* ── init ── */
 window.addEventListener('load', () => {
   if (sessionStorage.getItem('guest_unlocked') === '1') {
@@ -981,7 +859,6 @@ window.addEventListener('load', () => {
     document.getElementById('guest-content').style.display = 'block';
   }
   renderGuests();
-  setTimeout(() => { if (typeof QRCode !== 'undefined') generateQR(); }, 400);
 });
 </script>
 </body>
