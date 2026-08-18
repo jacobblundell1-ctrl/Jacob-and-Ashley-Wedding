@@ -5,650 +5,770 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jacob & Ashley — 14 March 2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root {
-    --sage: #7A9B76;
-    --sage-dark: #5C7A59;
-    --sage-light: #B5CDB3;
-    --sage-pale: #E8F0E7;
-    --cream: #F7F2EA;
-    --cream-dark: #EDE5D4;
-    --gold: #C4A55A;
-    --text: #3D3D35;
-    --text-light: #6B6B60;
-    --white: #FFFFFF;
+    --ink: #2e2e28;
+    --ink-soft: #6d6d62;
+    --paper: #faf8f3;
+    --paper-warm: #f2eee4;
+    --sage: #6e8666;
+    --sage-deep: #4f6349;
+    --sage-mist: #dde5da;
+    --brass: #ac9059;
+    --rule: #e3ddcf;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Lato', sans-serif;
-    background: var(--cream);
-    color: var(--text);
+    font-family: 'Inter', sans-serif;
     font-weight: 300;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    /* subtle paper grain */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.18 0 0 0 0 0.15 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(247, 242, 234, 0.96);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--cream-dark);
-    padding: 0 2rem;
+  ::selection { background: var(--sage-mist); }
+
+  h1, h2, h3, .serif {
+    font-family: 'Libre Caslon Text', serif;
+    font-weight: 400;
+    line-height: 1.15;
   }
-  nav ul {
-    display: flex; justify-content: center; gap: 2.5rem;
-    list-style: none; padding: 1rem 0;
+
+  .small-caps {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--ink-soft);
   }
-  nav a {
-    text-decoration: none; color: var(--text-light);
-    font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+
+  /* ───────────── NAV ───────────── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2.5rem;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .monogram {
+    width: 44px; height: 44px; flex-shrink: 0;
+  }
+  header nav { display: flex; gap: 2.2rem; }
+  header nav a {
+    text-decoration: none;
+    font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-soft); font-weight: 500;
     transition: color 0.2s;
   }
-  nav a:hover { color: var(--sage-dark); }
+  header nav a:hover { color: var(--sage-deep); }
+  @media (max-width: 640px) {
+    header { padding: 0.9rem 1.2rem; }
+    header nav { gap: 1.1rem; }
+    header nav a { font-size: 0.62rem; letter-spacing: 0.14em; }
+  }
 
-  /* ── HERO ── */
-  #hero {
+  /* ───────────── HERO ───────────── */
+  .hero {
     min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
-    background: linear-gradient(160deg, var(--cream) 0%, var(--sage-pale) 60%, var(--cream-dark) 100%);
-    padding: 6rem 2rem 4rem;
-    position: relative; overflow: hidden;
-  }
-  #hero::before {
-    content: '';
-    position: absolute; top: -80px; right: -80px;
-    width: 400px; height: 400px; border-radius: 50%;
-    background: radial-gradient(circle, var(--sage-light) 0%, transparent 70%);
-    opacity: 0.3;
-  }
-  #hero::after {
-    content: '';
-    position: absolute; bottom: -60px; left: -60px;
-    width: 300px; height: 300px; border-radius: 50%;
-    background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
-    opacity: 0.12;
-  }
-  .hero-photo {
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    object-fit: cover; object-position: center top;
-    border: 4px solid var(--white);
-    box-shadow: 0 8px 40px rgba(90,120,88,0.2);
-    margin-bottom: 2rem;
-    position: relative; z-index: 1;
-  }
-  .hero-ornament {
-    font-size: 1.1rem; color: var(--gold); letter-spacing: 0.3em;
-    margin-bottom: 1.5rem; opacity: 0.8;
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    align-items: center;
+    gap: 4rem;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 8rem 2.5rem 5rem;
   }
   .hero-names {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 8vw, 6rem);
-    color: var(--text); line-height: 1.1;
+    font-size: clamp(3.4rem, 8.5vw, 6.5rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
   }
-  .hero-names .amp {
-    font-style: italic; color: var(--sage); font-weight: 400;
+  .hero-names em {
+    font-style: italic;
+    color: var(--sage);
+    font-size: 0.62em;
+    display: block;
+    margin: 0.08em 0 0.02em 2.2em;
   }
-  .hero-date {
-    margin-top: 1.5rem;
-    font-size: 0.9rem; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--text-light);
+  .hero-kicker { margin-bottom: 2.2rem; display: flex; align-items: center; gap: 1rem; }
+  .hero-kicker .line { width: 42px; height: 1px; background: var(--brass); }
+  .hero-meta {
+    margin-top: 2.6rem;
+    display: flex; gap: 2.6rem; flex-wrap: wrap;
   }
-  .hero-divider {
-    width: 60px; height: 1px; background: var(--gold);
-    margin: 1.8rem auto; opacity: 0.6;
+  .hero-meta div p:first-child {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 1.35rem; font-style: italic; color: var(--ink);
   }
-  .hero-sub {
-    font-family: 'Playfair Display', serif; font-style: italic;
-    font-size: 1.15rem; color: var(--text-light);
+  .hero-meta div p:last-child { font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.06em; }
+
+  .hero-photo-wrap { position: relative; justify-self: end; width: 100%; max-width: 380px; }
+  .hero-photo-wrap::before {
+    content: '';
+    position: absolute; top: 18px; left: -18px; right: 18px; bottom: -18px;
+    border: 1px solid var(--brass);
+    z-index: 0;
+  }
+  .hero-photo {
+    position: relative; z-index: 1;
+    width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center 30%;
+    display: block;
+    filter: saturate(0.92);
+  }
+  .hero-caption {
+    margin-top: 1.4rem; font-size: 0.72rem; color: var(--ink-soft);
+    letter-spacing: 0.08em; font-style: italic;
+    font-family: 'Libre Caslon Text', serif; font-size: 0.95rem;
   }
 
-  /* ── COUNTDOWN ── */
-  #countdown {
-    display: flex; gap: 2rem; justify-content: center;
-    margin-top: 3rem; flex-wrap: wrap;
+  .hero-count {
+    margin-top: 2.8rem;
+    display: flex; align-items: baseline; gap: 0.6rem;
+    font-family: 'Libre Caslon Text', serif;
   }
-  .count-block {
-    text-align: center;
-    background: rgba(255,255,255,0.6);
-    border: 1px solid var(--sage-light);
-    border-radius: 12px;
-    padding: 1.2rem 1.6rem;
-    min-width: 80px;
+  .hero-count b {
+    font-size: 2rem; font-weight: 500; color: var(--sage-deep);
+    font-variant-numeric: tabular-nums;
   }
-  .count-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.4rem; color: var(--sage-dark); display: block; line-height: 1;
-  }
-  .count-label {
-    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--text-light); margin-top: 0.4rem; display: block;
+  .hero-count span { font-size: 0.95rem; color: var(--ink-soft); font-style: italic; }
+  .hero-count .dot { color: var(--brass); font-size: 1rem; }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 3rem; padding-top: 7rem; }
+    .hero-photo-wrap { justify-self: start; max-width: 300px; }
+    .hero-names em { margin-left: 1.2em; }
   }
 
-  /* ── SECTIONS ── */
-  section { padding: 5rem 2rem; }
-  section:nth-child(even) { background: var(--white); }
+  /* ───────────── SHARED SECTION ───────────── */
+  section { padding: 5.5rem 2.5rem; }
+  .inner { max-width: 1160px; margin: 0 auto; }
+  .inner-narrow { max-width: 720px; margin: 0 auto; }
 
-  .section-inner { max-width: 900px; margin: 0 auto; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 1.6rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.2rem;
+  }
+  .sec-head h2 {
+    font-size: clamp(1.9rem, 3.5vw, 2.7rem);
+    font-weight: 500;
+  }
+  .sec-head .num {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic; color: var(--brass); font-size: 1.1rem;
+  }
+  .sec-head .note { margin-left: auto; font-size: 0.72rem; color: var(--ink-soft); letter-spacing: 0.14em; text-transform: uppercase; }
+  @media (max-width: 640px) { .sec-head .note { display: none; } }
 
-  .section-tag {
-    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--sage); margin-bottom: 0.8rem; text-align: center;
+  /* ───────────── STORY ───────────── */
+  .story-grid {
+    display: grid; grid-template-columns: 5fr 6fr;
+    gap: 4rem; align-items: center;
+    margin-bottom: 4.5rem;
   }
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    text-align: center; margin-bottom: 0.5rem;
+  .story-grid.flip { grid-template-columns: 6fr 5fr; }
+  .story-grid.flip .story-photo-wrap { order: 2; }
+  .story-photo-wrap { position: relative; }
+  .story-photo-wrap::after {
+    content: attr(data-caption);
+    display: block; margin-top: 0.8rem;
+    font-family: 'Libre Caslon Text', serif; font-style: italic;
+    font-size: 0.95rem; color: var(--ink-soft);
   }
-  .section-line {
-    width: 50px; height: 1px; background: var(--gold);
-    margin: 1.2rem auto 3rem; opacity: 0.6;
+  .story-photo {
+    width: 100%; display: block; object-fit: cover;
+    aspect-ratio: 4/3;
+    filter: saturate(0.92);
+  }
+  .story-grid:nth-child(odd) .story-photo { aspect-ratio: 1/1; }
+  .story-text h3 {
+    font-size: 1.7rem; margin-bottom: 1rem; font-weight: 500;
+  }
+  .story-text h3 em { color: var(--sage); }
+  .story-text p { color: var(--ink-soft); font-size: 0.95rem; max-width: 46ch; }
+  .story-text .small-caps { display: block; margin-bottom: 0.9rem; color: var(--brass); }
+  @media (max-width: 780px) {
+    .story-grid, .story-grid.flip { grid-template-columns: 1fr; gap: 1.8rem; margin-bottom: 3.5rem; }
+    .story-grid.flip .story-photo-wrap { order: 0; }
   }
 
-  /* ── DETAILS ── */
-  .details-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 2rem;
-  }
-  .detail-card {
-    background: var(--cream); border-radius: 16px;
-    padding: 2rem; text-align: center;
-    border: 1px solid var(--cream-dark);
-  }
-  .detail-icon {
-    font-size: 2rem; margin-bottom: 1rem;
-  }
-  .detail-card h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--sage-dark);
-  }
-  .detail-card p {
-    font-size: 0.9rem; line-height: 1.8; color: var(--text-light);
-  }
-  .detail-card strong { color: var(--text); font-weight: 700; }
-
-  /* ── RSVP ── */
-  #rsvp {
-    background: var(--text) !important;
-    position: relative; padding: 0 !important; overflow: hidden;
-  }
-  .rsvp-collage {
+  /* ───────────── DETAILS ───────────── */
+  #details { background: var(--paper-warm); }
+  .detail-rows { border-top: 1px solid var(--rule); }
+  .detail-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    height: 100%; width: 100%;
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    grid-template-columns: 56px 1fr 1.4fr auto;
+    gap: 2rem; align-items: center;
+    padding: 2rem 0.5rem;
+    border-bottom: 1px solid var(--rule);
   }
-  .rsvp-collage img {
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center top; display: block;
-    filter: brightness(0.55);
+  .detail-row .icon { width: 40px; height: 40px; stroke: var(--sage-deep); }
+  .detail-row h3 { font-size: 1.45rem; font-weight: 500; }
+  .detail-row .desc { color: var(--ink-soft); font-size: 0.92rem; }
+  .detail-row .when {
+    font-family: 'Libre Caslon Text', serif; font-style: italic;
+    font-size: 1.25rem; color: var(--sage-deep); text-align: right;
+    white-space: nowrap;
   }
-  .rsvp-overlay {
-    position: relative; z-index: 2;
-    padding: 5rem 2rem;
+  @media (max-width: 700px) {
+    .detail-row { grid-template-columns: 44px 1fr; gap: 1rem; row-gap: 0.4rem; }
+    .detail-row .desc { grid-column: 2; }
+    .detail-row .when { grid-column: 2; text-align: left; }
   }
-  .rsvp-overlay .section-tag { color: var(--sage-light); }
-  .rsvp-overlay .section-title { color: var(--white); }
-  .rsvp-overlay .section-line { background: var(--gold); }
-  .rsvp-form {
-    max-width: 560px; margin: 0 auto;
-    background: rgba(255,255,255,0.97); border-radius: 20px;
-    padding: 2.5rem; box-shadow: 0 8px 60px rgba(0,0,0,0.3);
+
+  /* ───────────── RSVP ───────────── */
+  .rsvp-wrap {
+    display: grid; grid-template-columns: 5fr 6fr; gap: 0;
+    border: 1px solid var(--rule);
+    background: var(--paper);
   }
-  .form-row { margin-bottom: 1.2rem; }
-  .form-row label {
-    display: block; font-size: 0.75rem; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--text-light); margin-bottom: 0.4rem;
+  .rsvp-side {
+    position: relative; overflow: hidden; min-height: 420px;
   }
-  .form-row input,
-  .form-row select,
-  .form-row textarea {
-    width: 100%; padding: 0.75rem 1rem;
-    border: 1px solid var(--cream-dark);
-    border-radius: 8px; font-family: 'Lato', sans-serif;
-    font-size: 0.95rem; color: var(--text);
-    background: var(--cream); transition: border-color 0.2s;
-    outline: none;
+  .rsvp-side img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; filter: saturate(0.88);
   }
-  .form-row input:focus,
-  .form-row select:focus,
-  .form-row textarea:focus { border-color: var(--sage); }
-  .form-row textarea { resize: vertical; min-height: 80px; }
-  .btn {
-    display: inline-block; padding: 0.85rem 2.5rem;
-    background: var(--sage); color: var(--white);
-    border: none; border-radius: 50px; cursor: pointer;
-    font-family: 'Lato', sans-serif; font-size: 0.85rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    transition: background 0.2s, transform 0.15s;
+  .rsvp-side .veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(20deg, rgba(46,46,40,0.35), transparent 55%);
+  }
+  .rsvp-side blockquote {
+    position: absolute; left: 1.8rem; bottom: 1.6rem; right: 1.8rem;
+    color: #fdfcf9;
+    font-family: 'Libre Caslon Text', serif; font-style: italic;
+    font-size: 1.25rem; line-height: 1.4;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.35);
+  }
+  .rsvp-form-side { padding: 2.8rem 2.6rem; }
+  .rsvp-form-side .small-caps { color: var(--brass); display: block; margin-bottom: 0.6rem; }
+  .rsvp-form-side h2 { font-size: 2rem; margin-bottom: 0.4rem; }
+  .rsvp-form-side .deadline { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 2rem; }
+
+  .frow { margin-bottom: 1.15rem; }
+  .frow label {
+    display: block; font-size: 0.68rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-soft);
+    margin-bottom: 0.45rem; font-weight: 500;
+  }
+  .frow input, .frow select, .frow textarea {
     width: 100%;
+    padding: 0.7rem 0.2rem;
+    border: none; border-bottom: 1px solid var(--rule);
+    background: transparent;
+    font-family: 'Inter', sans-serif; font-size: 0.98rem; color: var(--ink);
+    outline: none; border-radius: 0;
+    transition: border-color 0.25s;
   }
-  .btn:hover { background: var(--sage-dark); transform: translateY(-1px); }
-  .btn-outline {
-    background: transparent; color: var(--sage);
-    border: 1.5px solid var(--sage);
-  }
-  .btn-outline:hover { background: var(--sage); color: var(--white); }
-  .btn-sm { padding: 0.5rem 1.2rem; font-size: 0.75rem; width: auto; }
-  .btn-danger { background: #c0392b; }
-  .btn-danger:hover { background: #a93226; }
-  .rsvp-success {
-    display: none; text-align: center; padding: 2rem;
-    color: var(--sage-dark);
-  }
-  .rsvp-success .check { font-size: 3rem; margin-bottom: 1rem; }
+  .frow input:focus, .frow select:focus, .frow textarea:focus { border-bottom-color: var(--sage); }
+  .frow textarea { resize: vertical; min-height: 66px; }
 
-  /* ── GUEST LIST ── */
-  .guest-controls {
-    display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
-    align-items: center;
+  .btn {
+    display: inline-block;
+    padding: 0.9rem 2.6rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 500;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
   }
-  .guest-controls input {
-    flex: 1; min-width: 200px; padding: 0.6rem 1rem;
-    border: 1px solid var(--cream-dark); border-radius: 8px;
-    font-family: 'Lato', sans-serif; font-size: 0.9rem;
-    background: var(--cream); outline: none;
+  .btn:hover { background: var(--sage-deep); border-color: var(--sage-deep); }
+  .btn:disabled { opacity: 0.5; cursor: wait; }
+  .btn-ghost {
+    background: transparent; color: var(--ink);
   }
-  .guest-controls input:focus { border-color: var(--sage); }
-  #guest-table {
-    width: 100%; border-collapse: collapse; font-size: 0.9rem;
-  }
-  #guest-table th {
-    background: var(--sage-pale); padding: 0.75rem 1rem;
-    text-align: left; font-size: 0.7rem; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--sage-dark);
-    border-bottom: 2px solid var(--sage-light);
-  }
-  #guest-table td {
-    padding: 0.75rem 1rem; border-bottom: 1px solid var(--cream-dark);
-    vertical-align: middle;
-  }
-  #guest-table tr:hover td { background: var(--sage-pale); }
-  .rsvp-badge {
-    display: inline-block; padding: 0.2rem 0.6rem;
-    border-radius: 20px; font-size: 0.72rem; font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-  .rsvp-yes { background: #e8f5e9; color: #388e3c; }
-  .rsvp-no { background: #fce4ec; color: #c62828; }
-  .rsvp-pending { background: var(--cream-dark); color: var(--text-light); }
-  .guest-stats {
-    display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
-  }
-  .stat-pill {
-    background: var(--white); border: 1px solid var(--cream-dark);
-    border-radius: 20px; padding: 0.4rem 1rem;
-    font-size: 0.8rem; color: var(--text-light);
-  }
-  .stat-pill strong { color: var(--text); }
-  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--cream-dark); }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+  .btn-small { padding: 0.55rem 1.3rem; font-size: 0.64rem; }
 
-  /* ── ADD GUEST INLINE ── */
-  .add-guest-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
-  .add-guest-row input, .add-guest-row select {
-    flex: 1; min-width: 120px; padding: 0.55rem 0.8rem;
-    border: 1px solid var(--cream-dark); border-radius: 8px;
-    font-family: 'Lato', sans-serif; font-size: 0.85rem;
-    background: var(--cream); outline: none;
-  }
-  .add-guest-row input:focus, .add-guest-row select:focus { border-color: var(--sage); }
+  .rsvp-done { display: none; padding: 2rem 0; }
+  .rsvp-done h3 { font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .rsvp-done p { color: var(--ink-soft); }
 
-  /* ── QR ── */
-  #qr { background: var(--sage-pale) !important; }
-  .qr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-  @media (max-width: 640px) { .qr-grid { grid-template-columns: 1fr; } }
-  .qr-config { display: flex; flex-direction: column; gap: 1rem; }
-  .qr-config label {
-    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--text-light); margin-bottom: 0.2rem; display: block;
+  @media (max-width: 780px) {
+    .rsvp-wrap { grid-template-columns: 1fr; }
+    .rsvp-side { min-height: 300px; }
   }
-  .qr-config input, .qr-config select {
-    width: 100%; padding: 0.65rem 1rem;
-    border: 1px solid var(--cream-dark); border-radius: 8px;
-    font-family: 'Lato', sans-serif; font-size: 0.9rem;
-    background: var(--white); outline: none;
-  }
-  .qr-config input:focus { border-color: var(--sage); }
-  .qr-preview {
-    background: var(--white); border-radius: 20px;
-    padding: 2rem; text-align: center;
-    box-shadow: 0 4px 30px rgba(90,120,88,0.1);
-    border: 1px solid var(--cream-dark);
-  }
-  .qr-preview h3 {
-    font-family: 'Playfair Display', serif; margin-bottom: 0.4rem;
-    font-size: 1.2rem;
-  }
-  .qr-preview p { font-size: 0.8rem; color: var(--text-light); margin-bottom: 1.5rem; }
-  #qr-canvas { display: flex; justify-content: center; margin: 1rem 0; }
-  #qr-canvas img, #qr-canvas canvas { border-radius: 8px; }
 
-  /* ── FOOTER ── */
+  /* ───────────── GUEST LIST ───────────── */
+  #guests { background: var(--paper-warm); }
+  .pin-gate { max-width: 380px; padding: 1rem 0; }
+  .pin-gate p { color: var(--ink-soft); font-size: 0.92rem; margin-bottom: 1.4rem; }
+  .pin-row { display: flex; gap: 0.7rem; }
+  .pin-row input {
+    flex: 1; padding: 0.75rem 0.2rem;
+    border: none; border-bottom: 1px solid var(--rule);
+    background: transparent; font-size: 1.05rem; letter-spacing: 0.4em;
+    font-family: 'Inter', sans-serif; outline: none; border-radius: 0;
+  }
+  .pin-row input:focus { border-bottom-color: var(--sage); }
+  .pin-error { color: #a04434; font-size: 0.82rem; margin-top: 0.8rem; display: none; }
+
+  .gstats { display: flex; gap: 2.4rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .gstat b {
+    display: block; font-family: 'Libre Caslon Text', serif;
+    font-size: 2.1rem; font-weight: 500; color: var(--sage-deep); line-height: 1;
+  }
+  .gstat span { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .gcontrols { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.4rem; align-items: center; }
+  .gcontrols input {
+    flex: 1; min-width: 180px;
+    padding: 0.6rem 0.2rem;
+    border: none; border-bottom: 1px solid var(--rule);
+    background: transparent; font-family: 'Inter', sans-serif; font-size: 0.92rem;
+    outline: none; border-radius: 0;
+  }
+  .gcontrols input:focus { border-bottom-color: var(--sage); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  thead th {
+    text-align: left; padding: 0.7rem 0.8rem;
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-soft); font-weight: 500;
+    border-bottom: 1px solid var(--ink);
+  }
+  tbody td { padding: 0.85rem 0.8rem; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  tbody tr:hover td { background: rgba(110,134,102,0.05); }
+  .tag {
+    font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+    padding: 0.18rem 0.55rem; border: 1px solid;
+  }
+  .tag-yes { color: var(--sage-deep); border-color: var(--sage); }
+  .tag-no { color: #a04434; border-color: #c68d80; }
+  .tag-pend { color: var(--ink-soft); border-color: var(--rule); }
+  .x-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--ink-soft); font-size: 0.95rem; padding: 0.2rem 0.5rem;
+  }
+  .x-btn:hover { color: #a04434; }
+
+  .add-row { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1.6rem; align-items: flex-end; }
+  .add-row input, .add-row select {
+    padding: 0.55rem 0.2rem;
+    border: none; border-bottom: 1px solid var(--rule);
+    background: transparent; font-family: 'Inter', sans-serif; font-size: 0.88rem;
+    outline: none; border-radius: 0; flex: 1; min-width: 110px;
+  }
+  .add-row input:focus, .add-row select:focus { border-bottom-color: var(--sage); }
+  .table-scroll { overflow-x: auto; }
+
+  /* ───────────── QR ───────────── */
+  .qr-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  @media (max-width: 780px) { .qr-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
+  .qr-intro p { color: var(--ink-soft); font-size: 0.95rem; max-width: 44ch; margin-bottom: 2rem; }
+  .qr-fields { display: flex; flex-direction: column; gap: 1.3rem; }
+  .qr-fields label {
+    display: block; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 0.4rem; font-weight: 500;
+  }
+  .qr-fields input, .qr-fields select {
+    width: 100%; padding: 0.65rem 0.2rem;
+    border: none; border-bottom: 1px solid var(--rule);
+    background: transparent; font-family: 'Inter', sans-serif; font-size: 0.95rem;
+    outline: none; border-radius: 0;
+  }
+  .qr-fields input:focus { border-bottom-color: var(--sage); }
+  .qr-buttons { display: flex; gap: 0.9rem; margin-top: 0.6rem; flex-wrap: wrap; }
+
+  .invite-card {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 2.6rem 2rem;
+    text-align: center;
+    position: relative;
+  }
+  .invite-card::before {
+    content: ''; position: absolute; inset: 9px;
+    border: 1px solid var(--sage-mist); pointer-events: none;
+  }
+  .invite-card .mono-sm { width: 52px; height: 52px; margin: 0 auto 1rem; }
+  .invite-card h3 { font-size: 1.6rem; font-weight: 500; }
+  .invite-card .idate { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-soft); margin: 0.4rem 0 1.2rem; }
+  .invite-card .guest {
+    font-family: 'Libre Caslon Text', serif; font-style: italic;
+    font-size: 1.25rem; margin-bottom: 1.2rem;
+  }
+  #qr-canvas { display: flex; justify-content: center; margin-bottom: 1rem; }
+  .invite-card .scan { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage-deep); }
+  .invite-card .url { font-size: 0.7rem; color: var(--ink-soft); margin-top: 0.4rem; }
+
+  /* ───────────── FOOTER ───────────── */
   footer {
-    background: var(--text); color: rgba(255,255,255,0.5);
-    text-align: center; padding: 2.5rem;
-    font-size: 0.8rem; letter-spacing: 0.08em;
+    border-top: 1px solid var(--rule);
+    padding: 3.5rem 2.5rem 3rem;
+    text-align: center;
   }
-  footer strong { color: rgba(255,255,255,0.8); font-weight: 400; }
+  footer .monogram { width: 54px; height: 54px; margin: 0 auto 1.2rem; }
+  footer p { font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.1em; }
+  footer .serif { font-size: 1.15rem; font-style: italic; color: var(--ink); margin-bottom: 0.3rem; }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    nav ul { gap: 1.2rem; flex-wrap: wrap; }
-    section { padding: 3.5rem 1.2rem; }
-  }
-
-  /* ── PRINT ── */
-  @media print {
-    nav, #hero, #rsvp, #qr, footer { display: none !important; }
-    section { padding: 1rem 0; background: white !important; }
-    .section-inner { max-width: 100%; }
-    #guest-table { font-size: 10pt; }
-    .btn, .guest-controls, .add-guest-row { display: none !important; }
-  }
-
-  /* ── TOAST ── */
+  /* ───────────── TOAST ───────────── */
   .toast {
-    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-    background: var(--sage-dark); color: white; padding: 0.8rem 2rem;
-    border-radius: 50px; font-size: 0.85rem; z-index: 999;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%) translateY(8px);
+    background: var(--ink); color: var(--paper);
+    padding: 0.75rem 1.8rem; font-size: 0.82rem; letter-spacing: 0.04em;
+    z-index: 999; opacity: 0; transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
   }
-  .toast.show { opacity: 1; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media print {
+    header, .hero, #rsvp, #qr, footer, .gcontrols, .add-row, .pin-gate { display: none !important; }
+    section { padding: 1rem 0; background: white !important; }
+  }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <ul>
-    <li><a href="#details">Details</a></li>
-    <li><a href="#rsvp">RSVP</a></li>
-    <li><a href="#guests">Guests</a></li>
-    <li><a href="#qr">QR Invites</a></li>
-  </ul>
-</nav>
+<!-- ── MONOGRAM DEF ── -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="ja-monogram">
+      <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+      <text x="32" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">J</text>
+      <text x="50" y="66" font-family="Libre Caslon Text, serif" font-size="20" fill="currentColor" text-anchor="middle" opacity="0.65">&amp;</text>
+      <text x="68" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">A</text>
+    </g>
+  </defs>
+</svg>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- HERO -->
-<section id="hero">
-  <img src="photo.jpg" alt="Jacob and Ashley" class="hero-photo">
-  <div class="hero-ornament">✦ &nbsp; We're getting married &nbsp; ✦</div>
-  <h1 class="hero-names">Jacob <span class="amp">&</span> Ashley</h1>
-  <p class="hero-date">Sunday, 14th March 2027</p>
-  <div class="hero-divider"></div>
-  <p class="hero-sub">Join us as we begin our forever</p>
-  <div id="countdown">
-    <div class="count-block"><span class="count-num" id="cd-days">—</span><span class="count-label">Days</span></div>
-    <div class="count-block"><span class="count-num" id="cd-hours">—</span><span class="count-label">Hours</span></div>
-    <div class="count-block"><span class="count-num" id="cd-mins">—</span><span class="count-label">Minutes</span></div>
-    <div class="count-block"><span class="count-num" id="cd-secs">—</span><span class="count-label">Seconds</span></div>
+<!-- ── HEADER ── -->
+<header>
+  <svg class="monogram" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
+  <nav>
+    <a href="#story">Our Story</a>
+    <a href="#details">The Day</a>
+    <a href="#rsvp">RSVP</a>
+    <a href="#guests">Guests</a>
+    <a href="#qr">Invites</a>
+  </nav>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div>
+    <div class="hero-kicker">
+      <span class="line"></span>
+      <span class="small-caps">14 . 03 . 2027 &nbsp;·&nbsp; Sydney</span>
+    </div>
+    <h1 class="hero-names">
+      Jacob
+      <em>and</em>
+      Ashley
+    </h1>
+    <div class="hero-meta">
+      <div>
+        <p>Regina Coeli</p>
+        <p>Ceremony · Beverly Hills · 12:30pm</p>
+      </div>
+      <div>
+        <p>Doltone House</p>
+        <p>Reception · Sylvania Waters · 4:30pm</p>
+      </div>
+    </div>
+    <div class="hero-count" id="hero-count">
+      <b id="cd-days">—</b><span>days</span>
+      <span class="dot">·</span>
+      <b id="cd-hours">—</b><span>hours</span>
+      <span class="dot">·</span>
+      <b id="cd-mins">—</b><span>minutes</span>
+    </div>
+  </div>
+  <div class="hero-photo-wrap">
+    <img class="hero-photo" src="photo.jpg" alt="Jacob and Ashley">
+    <p class="hero-caption">The day we got engaged — she said yes.</p>
   </div>
 </section>
 
-<!-- DETAILS -->
+<!-- ── STORY ── -->
+<section id="story">
+  <div class="inner">
+    <div class="sec-head">
+      <span class="num">i.</span>
+      <h2>Our Story</h2>
+      <span class="note">How we got here</span>
+    </div>
+
+    <div class="story-grid">
+      <div class="story-photo-wrap" data-caption="Where it all began.">
+        <img class="story-photo" src="photo3.jpg" alt="">
+      </div>
+      <div class="story-text">
+        <span class="small-caps">The Beginning</span>
+        <h3>It started <em>simply enough</em></h3>
+        <p>[Write a few sentences here about how you two met — where it was, what you remember about it, maybe what your first impression was. Keep it short and honest; two or three sentences is plenty.]</p>
+      </div>
+    </div>
+
+    <div class="story-grid flip">
+      <div class="story-text">
+        <span class="small-caps">The Question</span>
+        <h3>And then, <em>a yes</em></h3>
+        <p>[A few sentences about the proposal — where you were, how it happened, or how it almost didn't go to plan. The imperfect details are usually the best ones.]</p>
+      </div>
+      <div class="story-photo-wrap" data-caption="Moments after the question.">
+        <img class="story-photo" src="photo2.jpg" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DETAILS ── -->
 <section id="details">
-  <div class="section-inner">
-    <p class="section-tag">The Day</p>
-    <h2 class="section-title">Event Details</h2>
-    <div class="section-line"></div>
-    <div class="details-grid">
-      <div class="detail-card">
-        <div class="detail-icon">💍</div>
+  <div class="inner">
+    <div class="sec-head">
+      <span class="num">ii.</span>
+      <h2>The Day</h2>
+      <span class="note">Sunday, 14th March 2027</span>
+    </div>
+    <div class="detail-rows">
+
+      <div class="detail-row">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke-width="1.3">
+          <circle cx="19" cy="28" r="9"/><circle cx="29" cy="28" r="9"/>
+          <path d="M24 14 l-3.5 -5 h7 z"/>
+        </svg>
         <h3>Ceremony</h3>
-        <p>
-          <strong>1:00 PM</strong><br>
-          Regina Coeli<br>
-          Beverly Hills
-        </p>
+        <p class="desc">Regina Coeli, Beverly Hills. Please arrive from 12:10pm for a 12:30 start.</p>
+        <p class="when">12:30 pm</p>
       </div>
-      <div class="detail-card">
-        <div class="detail-icon">🥂</div>
+
+      <div class="detail-row">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke-width="1.3">
+          <path d="M16 8 h16 l-2 14 a6 6 0 0 1 -12 0 z"/>
+          <path d="M24 28 v10 M17 40 h14"/>
+        </svg>
         <h3>Reception</h3>
-        <p>
-          <strong>4:30 PM onwards</strong><br>
-          Doltone House<br>
-          Sylvania Waters, NSW
-        </p>
+        <p class="desc">Doltone House, Sylvania Waters. Drinks on arrival, dinner and dancing to follow.</p>
+        <p class="when">4:30 pm</p>
       </div>
-      <div class="detail-card">
-        <div class="detail-icon">🌿</div>
-        <h3>Dress Code</h3>
-        <p>
-          <strong>Smart Formal</strong><br>
-          Ladies: floor-length or midi<br>
-          Gentlemen: suit & tie<br>
-          Colour suggestion: earth tones
-        </p>
+
+      <div class="detail-row">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke-width="1.3">
+          <path d="M14 40 c0-14 6-22 20-30 M14 40 c8 0 16-4 18-12"/>
+          <path d="M20 30 c3 1 7 0 9-3 M25 20 c2 1 5 1 7-1"/>
+        </svg>
+        <h3>Dress</h3>
+        <p class="desc">Smart formal. Earth tones welcome, though wear whatever you feel good in.</p>
+        <p class="when">—</p>
       </div>
-      <div class="detail-card">
-        <div class="detail-icon">🎁</div>
-        <h3>Gift Registry</h3>
-        <p>
-          Your presence is our greatest gift.<br>
-          If you'd like to give something,<br>
-          a honeymoon fund contribution<br>
-          would be much appreciated.
-        </p>
+
+      <div class="detail-row">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke-width="1.3">
+          <rect x="10" y="18" width="28" height="20" rx="1"/>
+          <path d="M10 24 h28 M24 18 v20"/>
+          <path d="M24 18 c-6 0-8-8-2-8 4 0 2 8 2 8 s-2-8 2-8 c6 0 4 8-2 8"/>
+        </svg>
+        <h3>Gifts</h3>
+        <p class="desc">Having you there is the main thing. If you'd like to give something, a contribution to our honeymoon would mean a lot.</p>
+        <p class="when">—</p>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- RSVP -->
+<!-- ── RSVP ── -->
 <section id="rsvp">
-  <div class="rsvp-collage">
-    <img src="photo.jpg" alt="">
-    <img src="photo2.jpg" alt="">
-    <img src="photo3.jpg" alt="">
-    <img src="photo4.jpg" alt="">
-  </div>
-  <div class="rsvp-overlay">
-  <div class="section-inner">
-    <p class="section-tag">Kindly respond by 14th December 2026</p>
-    <h2 class="section-title">RSVP</h2>
-    <div class="section-line"></div>
-    <div class="rsvp-form" id="rsvp-form-wrap">
-      <form id="rsvp-form">
-        <div class="form-row">
-          <label>Full Name *</label>
-          <input type="text" id="r-name" placeholder="Jane Smith" required>
+  <div class="inner">
+    <div class="rsvp-wrap">
+      <div class="rsvp-side">
+        <img src="photo4.jpg" alt="">
+        <div class="veil"></div>
+        <blockquote>We're getting married, and we'd love you there.</blockquote>
+      </div>
+      <div class="rsvp-form-side">
+        <span class="small-caps">Kindly reply by 14th December 2026</span>
+        <h2>RSVP</h2>
+        <p class="deadline">One reply per household is fine — just tell us how many of you are coming.</p>
+
+        <form id="rsvp-form">
+          <div class="frow">
+            <label for="r-name">Name</label>
+            <input type="text" id="r-name" required autocomplete="name">
+          </div>
+          <div class="frow">
+            <label for="r-email">Email</label>
+            <input type="email" id="r-email" autocomplete="email">
+          </div>
+          <div class="frow">
+            <label for="r-attending">Will you be there?</label>
+            <select id="r-attending" required>
+              <option value=""></option>
+              <option value="yes">Wouldn't miss it</option>
+              <option value="no">Sadly, can't make it</option>
+            </select>
+          </div>
+          <div class="frow">
+            <label for="r-guests">How many of you?</label>
+            <select id="r-guests">
+              <option value="1">Just me</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div class="frow">
+            <label for="r-notes">Dietaries or anything we should know</label>
+            <textarea id="r-notes"></textarea>
+          </div>
+          <button class="btn" type="submit">Send reply</button>
+        </form>
+
+        <div class="rsvp-done" id="rsvp-done">
+          <h3>Thank you.</h3>
+          <p>We've got your reply — see you on the day.<br>— J &amp; A</p>
         </div>
-        <div class="form-row">
-          <label>Email Address</label>
-          <input type="email" id="r-email" placeholder="jane@example.com">
-        </div>
-        <div class="form-row">
-          <label>Will you be attending? *</label>
-          <select id="r-attending" required>
-            <option value="">— Please select —</option>
-            <option value="yes">Joyfully accepts ✓</option>
-            <option value="no">Regretfully declines</option>
-          </select>
-        </div>
-        <div class="form-row" id="r-plus-row">
-          <label>Number of guests (including yourself)</label>
-          <select id="r-guests">
-            <option value="1">1 (just me)</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label>Dietary requirements or notes</label>
-          <textarea id="r-notes" placeholder="Vegetarian, allergies, anything we should know…"></textarea>
-        </div>
-        <button class="btn" type="submit">Send RSVP</button>
-      </form>
-      <div class="rsvp-success" id="rsvp-success">
-        <div class="check">🌿</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:0.5rem;">Thank you!</h3>
-        <p style="color:var(--text-light);">We can't wait to celebrate with you.<br>Jacob & Ashley</p>
       </div>
     </div>
-  </div>
   </div>
 </section>
 
-<!-- GUEST LIST -->
+<!-- ── GUEST LIST ── -->
 <section id="guests">
-  <div class="section-inner">
-    <p class="section-tag">Manage</p>
-    <h2 class="section-title">Guest List</h2>
-    <div class="section-line"></div>
-
-    <!-- PIN GATE -->
-    <div id="pin-gate" style="max-width:340px;margin:0 auto;text-align:center;">
-      <p style="color:var(--text-light);margin-bottom:1.5rem;font-size:0.95rem;line-height:1.7;">
-        This section is private.<br>Enter your PIN to manage the guest list.
-      </p>
-      <div style="display:flex;gap:0.5rem;justify-content:center;margin-bottom:1rem;">
-        <input type="password" id="pin-input" maxlength="10"
-          placeholder="Enter PIN"
-          style="padding:0.75rem 1rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:1.1rem;text-align:center;width:160px;font-family:Lato,sans-serif;outline:none;background:var(--cream);"
-          onkeydown="if(event.key==='Enter') checkPin()">
-        <button class="btn" style="width:auto;padding:0.75rem 1.5rem" onclick="checkPin()">Unlock</button>
-      </div>
-      <p id="pin-error" style="color:#c0392b;font-size:0.85rem;display:none;">Incorrect PIN — please try again.</p>
+  <div class="inner">
+    <div class="sec-head">
+      <span class="num">iii.</span>
+      <h2>Guest List</h2>
+      <span class="note">Private</span>
     </div>
 
-    <!-- GUEST LIST CONTENT (hidden until PIN entered) -->
+    <div class="pin-gate" id="pin-gate">
+      <p>This part of the site is just for us. Enter the PIN to continue.</p>
+      <div class="pin-row">
+        <input type="password" id="pin-input" maxlength="10" placeholder="····" onkeydown="if(event.key==='Enter') checkPin()">
+        <button class="btn btn-small" onclick="checkPin()">Unlock</button>
+      </div>
+      <p class="pin-error" id="pin-error">That's not it — try again.</p>
+    </div>
+
     <div id="guest-content" style="display:none;">
-      <div style="text-align:right;margin-bottom:1rem;">
-        <button class="btn btn-outline btn-sm" onclick="lockGuests()">🔒 Lock</button>
+      <div class="gstats" id="guest-stats"></div>
+      <div class="gcontrols">
+        <input type="text" id="guest-search" placeholder="Search…" oninput="renderGuests()">
+        <button class="btn btn-ghost btn-small" onclick="exportCSV()">Export CSV</button>
+        <button class="btn btn-ghost btn-small" onclick="window.print()">Print</button>
+        <button class="btn btn-ghost btn-small" onclick="lockGuests()">Lock</button>
       </div>
-      <div class="guest-stats" id="guest-stats"></div>
-      <div class="guest-controls">
-        <input type="text" id="guest-search" placeholder="Search guests…" oninput="filterGuests()">
-        <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
-        <button class="btn btn-sm" onclick="window.print()">🖨 Print List</button>
-      </div>
-      <div class="table-wrap">
-        <table id="guest-table">
+      <div class="table-scroll">
+        <table>
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Party Size</th>
-              <th>RSVP</th>
-              <th>Notes</th>
-              <th></th>
-            </tr>
+            <tr><th>Name</th><th>Email</th><th>Party</th><th>Reply</th><th>Notes</th><th></th></tr>
           </thead>
           <tbody id="guest-tbody"></tbody>
         </table>
       </div>
-      <div class="add-guest-row">
-        <input type="text" id="ag-name" placeholder="Guest name *">
-        <input type="email" id="ag-email" placeholder="Email (optional)">
+      <div class="add-row">
+        <input type="text" id="ag-name" placeholder="Guest name">
+        <input type="email" id="ag-email" placeholder="Email">
         <select id="ag-attending">
           <option value="pending">Pending</option>
           <option value="yes">Attending</option>
-          <option value="no">Not attending</option>
+          <option value="no">Declined</option>
         </select>
-        <input type="number" id="ag-guests" placeholder="Party size" min="1" max="10" value="1" style="max-width:110px">
+        <input type="number" id="ag-guests" min="1" max="10" value="1" style="max-width:70px" title="Party size">
         <input type="text" id="ag-notes" placeholder="Notes">
-        <button class="btn btn-sm" onclick="addGuest()">+ Add</button>
+        <button class="btn btn-small" onclick="addGuest()">Add</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- QR CODE INVITES -->
+<!-- ── QR INVITES ── -->
 <section id="qr">
-  <div class="section-inner">
-    <p class="section-tag">Invites</p>
-    <h2 class="section-title">QR Code Generator</h2>
-    <div class="section-line"></div>
-    <p style="text-align:center;color:var(--text-light);max-width:500px;margin:0 auto 2.5rem;font-size:0.95rem;line-height:1.8;">
-      Generate a personalised QR code for each guest that links directly to your RSVP page.
-      Print it on their invite card — they simply scan to respond.
-    </p>
-    <div class="qr-grid">
-      <div class="qr-config">
-        <div>
-          <label>Link to encode (your website URL)</label>
-          <input type="text" id="qr-url" value="https://www.jacobandashley2027.com/#rsvp" placeholder="https://…">
+  <div class="inner">
+    <div class="sec-head">
+      <span class="num">iv.</span>
+      <h2>Invites</h2>
+      <span class="note">QR codes for the printed cards</span>
+    </div>
+    <div class="qr-layout">
+      <div class="qr-intro">
+        <p>Each printed invite carries a small code that brings guests straight to the RSVP form. Enter a guest's name, generate their code, and print the card.</p>
+        <div class="qr-fields">
+          <div>
+            <label for="qr-url">Link</label>
+            <input type="text" id="qr-url" value="https://www.jacobandashley2027.com/#rsvp">
+          </div>
+          <div>
+            <label for="qr-guest-name">Guest name</label>
+            <input type="text" id="qr-guest-name" value="The Smith Family">
+          </div>
+          <div>
+            <label for="qr-size">Size</label>
+            <select id="qr-size">
+              <option value="128">Small</option>
+              <option value="180" selected>Medium</option>
+              <option value="240">Large</option>
+            </select>
+          </div>
+          <div class="qr-buttons">
+            <button class="btn" onclick="generateQR()">Generate</button>
+            <button class="btn btn-ghost" onclick="printQR()">Print card</button>
+          </div>
         </div>
-        <div>
-          <label>Guest name (appears on card)</label>
-          <input type="text" id="qr-guest-name" value="Jane & John Smith" placeholder="Guest name">
-        </div>
-        <div>
-          <label>QR code size</label>
-          <select id="qr-size">
-            <option value="128">Small (128px)</option>
-            <option value="200" selected>Medium (200px)</option>
-            <option value="256">Large (256px)</option>
-          </select>
-        </div>
-        <button class="btn" onclick="generateQR()">Generate QR Code</button>
-        <button class="btn btn-outline" onclick="printQR()">🖨 Print Invite Card</button>
       </div>
-      <div class="qr-preview" id="qr-preview-card">
-        <p style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sage);margin-bottom:0.5rem;">— You are invited —</p>
-        <h3 id="qr-card-names">Jacob & Ashley</h3>
-        <p style="font-size:0.75rem;margin-bottom:0;color:var(--text-light);">14th March 2027</p>
-        <div style="height:1px;background:var(--cream-dark);margin:1rem 0"></div>
-        <p id="qr-card-guest" style="font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--text);margin-bottom:0.5rem;">Jane & John Smith</p>
-        <p style="font-size:0.75rem;color:var(--text-light);margin-bottom:1rem;">Scan to RSVP</p>
+      <div class="invite-card" id="invite-card">
+        <svg class="mono-sm" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
+        <h3>Jacob &amp; Ashley</h3>
+        <p class="idate">14 · 03 · 2027</p>
+        <p class="guest" id="qr-card-guest">The Smith Family</p>
         <div id="qr-canvas"></div>
-        <p style="font-size:0.68rem;color:var(--sage-light);margin-top:1rem;">or visit: <span id="qr-url-display" style="color:var(--sage)">yourweddingwebsite.com</span></p>
+        <p class="scan">Scan to reply</p>
+        <p class="url" id="qr-url-display">jacobandashley2027.com</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── FOOTER ── -->
 <footer>
-  <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">Jacob <em>&</em> Ashley</p>
-  <p>14th March 2027 &nbsp;·&nbsp; With love ✦</p>
+  <svg class="monogram" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
+  <p class="serif">See you there.</p>
+  <p>Regina Coeli &amp; Doltone House · 14th March 2027</p>
 </footer>
 
 <script>
-/* ─── COUNTDOWN ─── */
-function updateCountdown() {
-  const wedding = new Date('2027-03-14T13:00:00');
-  const now = new Date();
-  const diff = wedding - now;
+/* ── countdown ── */
+function tick() {
+  const wedding = new Date('2027-03-14T12:30:00');
+  const diff = wedding - new Date();
   if (diff <= 0) {
-    document.getElementById('countdown').innerHTML = '<p style="font-family:Playfair Display,serif;font-style:italic;font-size:1.5rem;color:var(--sage)">The big day is here! 🎉</p>';
+    document.getElementById('hero-count').innerHTML = '<span style="font-style:italic;font-size:1.3rem;color:var(--sage-deep)">Today’s the day.</span>';
     return;
   }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+  document.getElementById('cd-days').textContent  = Math.floor(diff / 86400000);
+  document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
+  document.getElementById('cd-mins').textContent  = Math.floor((diff % 3600000) / 60000);
 }
-updateCountdown();
-setInterval(updateCountdown, 1000);
+tick(); setInterval(tick, 30000);
 
-/* ─── TOAST ─── */
+/* ── toast ── */
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(() => t.classList.remove('show'), 2400);
 }
 
-/* ─── PIN PROTECTION ─── */
-const GUEST_PIN = '2027'; // Change this to your preferred PIN
+/* ── pin ── */
+const GUEST_PIN = '2027';
 function checkPin() {
-  const val = document.getElementById('pin-input').value;
-  if (val === GUEST_PIN) {
+  if (document.getElementById('pin-input').value === GUEST_PIN) {
     document.getElementById('pin-gate').style.display = 'none';
     document.getElementById('guest-content').style.display = 'block';
     sessionStorage.setItem('guest_unlocked', '1');
@@ -666,58 +786,48 @@ function lockGuests() {
   document.getElementById('pin-input').value = '';
 }
 
-/* ─── GUEST DATA (localStorage) ─── */
-function loadGuests() {
-  return JSON.parse(localStorage.getItem('wedding_guests') || '[]');
-}
-function saveGuests(list) {
-  localStorage.setItem('wedding_guests', JSON.stringify(list));
-}
-
-function renderGuests() {
-  const list = loadGuests();
-  const query = (document.getElementById('guest-search')?.value || '').toLowerCase();
-  const filtered = list.filter(g => g.name.toLowerCase().includes(query) || (g.email||'').toLowerCase().includes(query));
-
-  const tbody = document.getElementById('guest-tbody');
-  tbody.innerHTML = '';
-  filtered.forEach((g, idx) => {
-    const realIdx = list.indexOf(g);
-    const badgeClass = g.attending === 'yes' ? 'rsvp-yes' : g.attending === 'no' ? 'rsvp-no' : 'rsvp-pending';
-    const badgeText = g.attending === 'yes' ? 'Attending' : g.attending === 'no' ? 'Declined' : 'Pending';
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${escHtml(g.name)}</strong></td>
-      <td>${escHtml(g.email || '—')}</td>
-      <td style="text-align:center">${g.guests || 1}</td>
-      <td><span class="rsvp-badge ${badgeClass}">${badgeText}</span></td>
-      <td style="color:var(--text-light);font-size:0.85rem">${escHtml(g.notes || '')}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="removeGuest(${realIdx})">✕</button></td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  // Stats
-  const yes = list.filter(g => g.attending === 'yes');
-  const no  = list.filter(g => g.attending === 'no');
-  const pend = list.filter(g => g.attending === 'pending' || !g.attending);
-  const headcount = yes.reduce((s,g) => s + (parseInt(g.guests)||1), 0);
-  document.getElementById('guest-stats').innerHTML = `
-    <div class="stat-pill"><strong>${list.length}</strong> invited</div>
-    <div class="stat-pill"><strong>${yes.length}</strong> attending</div>
-    <div class="stat-pill"><strong>${headcount}</strong> total guests</div>
-    <div class="stat-pill"><strong>${no.length}</strong> declined</div>
-    <div class="stat-pill"><strong>${pend.length}</strong> pending</div>
-  `;
-}
-
+/* ── guest data ── */
+function loadGuests() { return JSON.parse(localStorage.getItem('wedding_guests') || '[]'); }
+function saveGuests(l) { localStorage.setItem('wedding_guests', JSON.stringify(l)); }
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+function renderGuests() {
+  const list = loadGuests();
+  const q = (document.getElementById('guest-search')?.value || '').toLowerCase();
+  const shown = list.filter(g => g.name.toLowerCase().includes(q) || (g.email||'').toLowerCase().includes(q));
+
+  const tbody = document.getElementById('guest-tbody');
+  tbody.innerHTML = '';
+  shown.forEach(g => {
+    const i = list.indexOf(g);
+    const cls = g.attending === 'yes' ? 'tag-yes' : g.attending === 'no' ? 'tag-no' : 'tag-pend';
+    const txt = g.attending === 'yes' ? 'Attending' : g.attending === 'no' ? 'Declined' : 'Pending';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong style="font-weight:600">${escHtml(g.name)}</strong></td>
+      <td style="color:var(--ink-soft)">${escHtml(g.email || '—')}</td>
+      <td>${g.guests || 1}</td>
+      <td><span class="tag ${cls}">${txt}</span></td>
+      <td style="color:var(--ink-soft);font-size:0.84rem">${escHtml(g.notes || '')}</td>
+      <td><button class="x-btn" onclick="removeGuest(${i})" title="Remove">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+
+  const yes = list.filter(g => g.attending === 'yes');
+  const heads = yes.reduce((s,g) => s + (parseInt(g.guests)||1), 0);
+  document.getElementById('guest-stats').innerHTML = `
+    <div class="gstat"><b>${list.length}</b><span>Invited</span></div>
+    <div class="gstat"><b>${yes.length}</b><span>Replies yes</span></div>
+    <div class="gstat"><b>${heads}</b><span>Heads</span></div>
+    <div class="gstat"><b>${list.filter(g=>g.attending==='no').length}</b><span>Declined</span></div>
+    <div class="gstat"><b>${list.filter(g=>!g.attending||g.attending==='pending').length}</b><span>Pending</span></div>`;
+}
+
 function addGuest() {
   const name = document.getElementById('ag-name').value.trim();
-  if (!name) { showToast('Please enter a guest name'); return; }
+  if (!name) { showToast('Enter a guest name first'); return; }
   const list = loadGuests();
   list.push({
     name,
@@ -728,29 +838,25 @@ function addGuest() {
     addedAt: new Date().toISOString()
   });
   saveGuests(list);
-  document.getElementById('ag-name').value = '';
-  document.getElementById('ag-email').value = '';
-  document.getElementById('ag-notes').value = '';
+  ['ag-name','ag-email','ag-notes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('ag-guests').value = '1';
   document.getElementById('ag-attending').value = 'pending';
   renderGuests();
-  showToast(`${name} added to guest list ✓`);
+  showToast(name + ' added');
 }
 
-function removeGuest(idx) {
+function removeGuest(i) {
   const list = loadGuests();
-  const name = list[idx]?.name;
-  list.splice(idx, 1);
+  const name = list[i]?.name;
+  list.splice(i, 1);
   saveGuests(list);
   renderGuests();
-  showToast(`${name} removed`);
+  showToast(name + ' removed');
 }
-
-function filterGuests() { renderGuests(); }
 
 function exportCSV() {
   const list = loadGuests();
-  if (!list.length) { showToast('No guests to export'); return; }
+  if (!list.length) { showToast('Nothing to export yet'); return; }
   const rows = [['Name','Email','Attending','Party Size','Notes','Added']];
   list.forEach(g => rows.push([g.name, g.email||'', g.attending, g.guests||1, g.notes||'', g.addedAt||'']));
   const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
@@ -758,10 +864,10 @@ function exportCSV() {
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
   a.download = 'jacob-ashley-guest-list.csv';
   a.click();
-  showToast('Guest list exported ✓');
+  showToast('Exported');
 }
 
-/* ─── RSVP FORM → Formspree ─── */
+/* ── rsvp → formspree ── */
 document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const name      = document.getElementById('r-name').value.trim();
@@ -769,12 +875,10 @@ document.getElementById('rsvp-form').addEventListener('submit', async function(e
   const attending = document.getElementById('r-attending').value;
   const guests    = document.getElementById('r-guests').value;
   const notes     = document.getElementById('r-notes').value.trim();
-  if (!attending) { showToast('Please indicate if you can attend'); return; }
+  if (!attending) { showToast('Let us know if you can make it'); return; }
 
-  const attendingText = attending === 'yes' ? 'Joyfully accepts ✓' : 'Regretfully declines';
-  const submitBtn = this.querySelector('button[type="submit"]');
-  submitBtn.textContent = 'Sending…';
-  submitBtn.disabled = true;
+  const btn = this.querySelector('button[type="submit"]');
+  btn.textContent = 'Sending…'; btn.disabled = true;
 
   try {
     const res = await fetch('https://formspree.io/f/mnjyvdyw', {
@@ -783,205 +887,101 @@ document.getElementById('rsvp-form').addEventListener('submit', async function(e
       body: JSON.stringify({
         name,
         email: email || 'Not provided',
-        attending: attendingText,
+        attending: attending === 'yes' ? 'Attending' : 'Declined',
         party_size: guests,
         dietary_notes: notes || 'None'
       })
     });
-
-    if (res.ok) {
-      document.getElementById('rsvp-form').style.display = 'none';
-      document.getElementById('rsvp-success').style.display = 'block';
-      showToast('RSVP received! Thank you 🌿');
-    } else {
-      throw new Error('Submission failed');
-    }
+    if (!res.ok) throw new Error();
+    document.getElementById('rsvp-form').style.display = 'none';
+    document.getElementById('rsvp-done').style.display = 'block';
   } catch(err) {
-    submitBtn.textContent = 'Send RSVP';
-    submitBtn.disabled = false;
-    showToast('Something went wrong — please try again');
+    btn.textContent = 'Send reply'; btn.disabled = false;
+    showToast('That didn’t go through — please try again');
   }
 });
 
-/* ─── QR CODE ─── */
-let qrInstance = null;
+/* ── qr ── */
 function generateQR() {
   const url = document.getElementById('qr-url').value.trim();
   const guestName = document.getElementById('qr-guest-name').value.trim();
   const size = parseInt(document.getElementById('qr-size').value);
-  if (!url) { showToast('Please enter a URL'); return; }
+  if (!url) { showToast('Enter a link first'); return; }
 
   const canvas = document.getElementById('qr-canvas');
   canvas.innerHTML = '';
-  document.getElementById('qr-card-guest').textContent = guestName || 'Your Guest';
+  document.getElementById('qr-card-guest').textContent = guestName || 'Our Guest';
   try {
-    const displayUrl = url.replace(/^https?:\/\//, '').split('/')[0];
-    document.getElementById('qr-url-display').textContent = displayUrl;
+    document.getElementById('qr-url-display').textContent = url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
   } catch(e) {}
 
-  qrInstance = new QRCode(canvas, {
-    text: url,
-    width: size,
-    height: size,
-    colorDark: '#3D3D35',
-    colorLight: '#FFFFFF',
+  new QRCode(canvas, {
+    text: url, width: size, height: size,
+    colorDark: '#2e2e28', colorLight: '#faf8f3',
     correctLevel: QRCode.CorrectLevel.M
   });
-  showToast('QR code generated ✓');
+  showToast('Code ready');
 }
 
 function printQR() {
   const canvas = document.getElementById('qr-canvas');
-  if (!canvas.children.length) { showToast('Generate a QR code first'); return; }
+  if (!canvas.children.length) { showToast('Generate a code first'); return; }
   const guestName = escHtml(document.getElementById('qr-card-guest').textContent);
   const displayUrl = escHtml(document.getElementById('qr-url-display').textContent);
   const qrHtml = canvas.innerHTML;
   const w = window.open('', '_blank');
   w.document.write(`<!DOCTYPE html>
-<html><head><title>Invite — Jacob & Ashley</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<html><head><title>Invite — Jacob &amp; Ashley</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   @page { size: A5; margin: 0; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Lato', sans-serif;
-    background: #F7F2EA;
-    display: flex; justify-content: center; align-items: center;
-    min-height: 100vh;
-  }
-  .card {
-    width: 148mm; min-height: 210mm;
-    background: #F7F2EA;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
-    padding: 14mm 12mm;
-    position: relative;
-  }
-  /* Botanical corner SVGs */
-  .corner { position: absolute; width: 52px; height: 52px; opacity: 0.55; }
-  .corner-tl { top: 8mm; left: 8mm; }
-  .corner-tr { top: 8mm; right: 8mm; transform: scaleX(-1); }
-  .corner-bl { bottom: 8mm; left: 8mm; transform: scaleY(-1); }
-  .corner-br { bottom: 8mm; right: 8mm; transform: scale(-1,-1); }
-  /* Border frame */
-  .frame {
-    position: absolute; inset: 7mm;
-    border: 1.5px solid #7A9B76;
-    border-radius: 2px;
-    pointer-events: none;
-  }
-  .frame-inner {
-    position: absolute; inset: 9.5mm;
-    border: 0.5px solid #C4A55A;
-    border-radius: 1px;
-    pointer-events: none;
-    opacity: 0.5;
-  }
-  .content { position: relative; z-index: 2; width: 100%; }
-  .tag {
-    font-size: 7pt; letter-spacing: 0.28em; text-transform: uppercase;
-    color: #7A9B76; margin-bottom: 5mm;
-  }
-  .names {
-    font-family: 'Playfair Display', serif;
-    font-size: 28pt; color: #3D3D35; line-height: 1.1;
-    margin-bottom: 2mm;
-  }
-  .amp { font-style: italic; color: #7A9B76; }
-  .divider {
-    width: 40px; height: 1px; background: #C4A55A;
-    margin: 4mm auto; opacity: 0.7;
-  }
-  .date {
-    font-size: 7.5pt; letter-spacing: 0.2em; text-transform: uppercase;
-    color: #6B6B60; margin-bottom: 6mm;
-  }
-  .sep {
-    display: flex; align-items: center; gap: 8px;
-    margin: 4mm 0 5mm; color: #B5CDB3;
-  }
-  .sep-line { flex: 1; height: 1px; background: #C4A55A; opacity: 0.4; }
-  .sep-leaf { font-size: 12pt; }
-  .dear { font-size: 7.5pt; letter-spacing: 0.1em; text-transform: uppercase; color: #6B6B60; margin-bottom: 2mm; }
-  .guest-name {
-    font-family: 'Playfair Display', serif; font-style: italic;
-    font-size: 15pt; color: #3D3D35; margin-bottom: 6mm;
-  }
-  .qr-wrap {
-    background: white; padding: 8px; border-radius: 8px;
-    display: inline-block; margin-bottom: 4mm;
-    box-shadow: 0 2px 12px rgba(90,120,88,0.12);
-  }
-  .scan { font-size: 7pt; letter-spacing: 0.15em; text-transform: uppercase; color: #7A9B76; margin-bottom: 2mm; }
-  .url { font-size: 6.5pt; color: #B5CDB3; }
-</style>
-</head>
-<body>
+  body { font-family:'Inter',sans-serif; background:#faf8f3; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+  .card { width:148mm; min-height:210mm; padding:16mm 14mm; text-align:center;
+          display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; }
+  .frame { position:absolute; inset:8mm; border:1px solid #6e8666; }
+  .frame2 { position:absolute; inset:10.5mm; border:0.5px solid #ac9059; opacity:0.5; }
+  .mono { width:64px; height:64px; margin-bottom:8mm; color:#4f6349; }
+  h1 { font-family:'Libre Caslon Text',serif; font-weight:500; font-size:26pt; color:#2e2e28; }
+  .date { font-size:7.5pt; letter-spacing:0.3em; color:#6d6d62; text-transform:uppercase; margin:3mm 0 8mm; }
+  .rule { width:36px; height:1px; background:#ac9059; margin:0 auto 8mm; }
+  .dear { font-size:7pt; letter-spacing:0.2em; text-transform:uppercase; color:#6d6d62; margin-bottom:2mm; }
+  .guest { font-family:'Libre Caslon Text',serif; font-style:italic; font-size:15pt; color:#2e2e28; margin-bottom:8mm; }
+  .qr { background:white; padding:10px; display:inline-block; margin-bottom:4mm; border:1px solid #e3ddcf; }
+  .scan { font-size:6.5pt; letter-spacing:0.24em; text-transform:uppercase; color:#4f6349; margin-bottom:1.5mm; }
+  .url { font-size:6.5pt; color:#6d6d62; }
+</style></head><body>
 <div class="card">
-  <div class="frame"></div>
-  <div class="frame-inner"></div>
-  <!-- Botanical corners -->
-  <svg class="corner corner-tl" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 55 Q5 5 55 5" stroke="#7A9B76" stroke-width="1.2" fill="none"/>
-    <ellipse cx="18" cy="22" rx="7" ry="4" fill="#7A9B76" transform="rotate(-40 18 22)" opacity="0.7"/>
-    <ellipse cx="28" cy="13" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-65 28 13)" opacity="0.6"/>
-    <ellipse cx="10" cy="35" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-15 10 35)" opacity="0.6"/>
-    <circle cx="22" cy="18" r="2" fill="#C4A55A" opacity="0.6"/>
-    <circle cx="14" cy="30" r="1.5" fill="#C4A55A" opacity="0.5"/>
+  <div class="frame"></div><div class="frame2"></div>
+  <svg class="mono" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+    <text x="32" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">J</text>
+    <text x="50" y="66" font-family="Libre Caslon Text, serif" font-size="20" fill="currentColor" text-anchor="middle" opacity="0.65">&amp;</text>
+    <text x="68" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">A</text>
   </svg>
-  <svg class="corner corner-tr" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 55 Q5 5 55 5" stroke="#7A9B76" stroke-width="1.2" fill="none"/>
-    <ellipse cx="18" cy="22" rx="7" ry="4" fill="#7A9B76" transform="rotate(-40 18 22)" opacity="0.7"/>
-    <ellipse cx="28" cy="13" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-65 28 13)" opacity="0.6"/>
-    <ellipse cx="10" cy="35" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-15 10 35)" opacity="0.6"/>
-    <circle cx="22" cy="18" r="2" fill="#C4A55A" opacity="0.6"/>
-    <circle cx="14" cy="30" r="1.5" fill="#C4A55A" opacity="0.5"/>
-  </svg>
-  <svg class="corner corner-bl" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 55 Q5 5 55 5" stroke="#7A9B76" stroke-width="1.2" fill="none"/>
-    <ellipse cx="18" cy="22" rx="7" ry="4" fill="#7A9B76" transform="rotate(-40 18 22)" opacity="0.7"/>
-    <ellipse cx="28" cy="13" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-65 28 13)" opacity="0.6"/>
-    <ellipse cx="10" cy="35" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-15 10 35)" opacity="0.6"/>
-    <circle cx="22" cy="18" r="2" fill="#C4A55A" opacity="0.6"/>
-    <circle cx="14" cy="30" r="1.5" fill="#C4A55A" opacity="0.5"/>
-  </svg>
-  <svg class="corner corner-br" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 55 Q5 5 55 5" stroke="#7A9B76" stroke-width="1.2" fill="none"/>
-    <ellipse cx="18" cy="22" rx="7" ry="4" fill="#7A9B76" transform="rotate(-40 18 22)" opacity="0.7"/>
-    <ellipse cx="28" cy="13" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-65 28 13)" opacity="0.6"/>
-    <ellipse cx="10" cy="35" rx="6" ry="3.5" fill="#7A9B76" transform="rotate(-15 10 35)" opacity="0.6"/>
-    <circle cx="22" cy="18" r="2" fill="#C4A55A" opacity="0.6"/>
-    <circle cx="14" cy="30" r="1.5" fill="#C4A55A" opacity="0.5"/>
-  </svg>
-  <div class="content">
-    <p class="tag">✦ &nbsp; You are cordially invited &nbsp; ✦</p>
-    <h1 class="names">Jacob <span class="amp">&</span> Ashley</h1>
-    <div class="divider"></div>
-    <p class="date">Sunday, 14th March 2027</p>
-    <div class="sep"><div class="sep-line"></div><span class="sep-leaf">🌿</span><div class="sep-line"></div></div>
-    <p class="dear">Dear</p>
-    <p class="guest-name">${guestName}</p>
-    <div class="qr-wrap">${qrHtml}</div>
-    <p class="scan">Scan to RSVP</p>
-    <p class="url">or visit: ${displayUrl}</p>
-  </div>
+  <h1>Jacob &amp; Ashley</h1>
+  <p class="date">Sunday · 14th March 2027</p>
+  <div class="rule"></div>
+  <p class="dear">Dear</p>
+  <p class="guest">${guestName}</p>
+  <div class="qr">${qrHtml}</div>
+  <p class="scan">Scan to reply</p>
+  <p class="url">or visit ${displayUrl}</p>
 </div>
 </body></html>`);
   w.document.close();
   setTimeout(() => w.print(), 900);
 }
 
-// Auto-generate a placeholder QR on load
+/* ── init ── */
 window.addEventListener('load', () => {
-  // Auto-unlock guest list if already authenticated this session
   if (sessionStorage.getItem('guest_unlocked') === '1') {
     document.getElementById('pin-gate').style.display = 'none';
     document.getElementById('guest-content').style.display = 'block';
   }
   renderGuests();
-  setTimeout(() => {
-    if (typeof QRCode !== 'undefined') generateQR();
-  }, 500);
+  setTimeout(() => { if (typeof QRCode !== 'undefined') generateQR(); }, 400);
 });
 </script>
 </body>
