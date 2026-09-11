@@ -169,38 +169,6 @@
   .sec-head .note { margin-left: auto; font-size: 0.72rem; color: var(--ink-soft); letter-spacing: 0.14em; text-transform: uppercase; }
   @media (max-width: 640px) { .sec-head .note { display: none; } }
 
-  /* ───────────── STORY ───────────── */
-  .story-grid {
-    display: grid; grid-template-columns: 5fr 6fr;
-    gap: 4rem; align-items: center;
-    margin-bottom: 4.5rem;
-  }
-  .story-grid.flip { grid-template-columns: 6fr 5fr; }
-  .story-grid.flip .story-photo-wrap { order: 2; }
-  .story-photo-wrap { position: relative; }
-  .story-photo-wrap::after {
-    content: attr(data-caption);
-    display: block; margin-top: 0.8rem;
-    font-family: 'Libre Caslon Text', serif; font-style: italic;
-    font-size: 0.95rem; color: var(--ink-soft);
-  }
-  .story-photo {
-    width: 100%; display: block; object-fit: cover;
-    aspect-ratio: 4/3;
-    filter: saturate(0.92);
-  }
-  .story-grid:nth-child(odd) .story-photo { aspect-ratio: 1/1; }
-  .story-text h3 {
-    font-size: 1.7rem; margin-bottom: 1rem; font-weight: 500;
-  }
-  .story-text h3 em { color: var(--sage); }
-  .story-text p { color: var(--ink-soft); font-size: 0.95rem; max-width: 46ch; }
-  .story-text .small-caps { display: block; margin-bottom: 0.9rem; color: var(--brass); }
-  @media (max-width: 780px) {
-    .story-grid, .story-grid.flip { grid-template-columns: 1fr; gap: 1.8rem; margin-bottom: 3.5rem; }
-    .story-grid.flip .story-photo-wrap { order: 0; }
-  }
-
   /* ───────────── DETAILS ───────────── */
   #details { background: var(--paper-warm); }
   .detail-rows { border-top: 1px solid var(--rule); }
@@ -236,7 +204,7 @@
   }
   .rsvp-side img {
     position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; filter: saturate(0.88);
+    object-fit: cover; object-position: center 25%; filter: saturate(0.88);
   }
   .rsvp-side .veil {
     position: absolute; inset: 0;
@@ -363,46 +331,6 @@
   .add-row input:focus, .add-row select:focus { border-bottom-color: var(--sage); }
   .table-scroll { overflow-x: auto; }
 
-  /* ───────────── QR ───────────── */
-  .qr-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-  @media (max-width: 780px) { .qr-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
-  .qr-intro p { color: var(--ink-soft); font-size: 0.95rem; max-width: 44ch; margin-bottom: 2rem; }
-  .qr-fields { display: flex; flex-direction: column; gap: 1.3rem; }
-  .qr-fields label {
-    display: block; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--ink-soft); margin-bottom: 0.4rem; font-weight: 500;
-  }
-  .qr-fields input, .qr-fields select {
-    width: 100%; padding: 0.65rem 0.2rem;
-    border: none; border-bottom: 1px solid var(--rule);
-    background: transparent; font-family: 'Inter', sans-serif; font-size: 0.95rem;
-    outline: none; border-radius: 0;
-  }
-  .qr-fields input:focus { border-bottom-color: var(--sage); }
-  .qr-buttons { display: flex; gap: 0.9rem; margin-top: 0.6rem; flex-wrap: wrap; }
-
-  .invite-card {
-    border: 1px solid var(--rule);
-    background: var(--paper);
-    padding: 2.6rem 2rem;
-    text-align: center;
-    position: relative;
-  }
-  .invite-card::before {
-    content: ''; position: absolute; inset: 9px;
-    border: 1px solid var(--sage-mist); pointer-events: none;
-  }
-  .invite-card .mono-sm { width: 52px; height: 52px; margin: 0 auto 1rem; }
-  .invite-card h3 { font-size: 1.6rem; font-weight: 500; }
-  .invite-card .idate { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-soft); margin: 0.4rem 0 1.2rem; }
-  .invite-card .guest {
-    font-family: 'Libre Caslon Text', serif; font-style: italic;
-    font-size: 1.25rem; margin-bottom: 1.2rem;
-  }
-  #qr-canvas { display: flex; justify-content: center; margin-bottom: 1rem; }
-  .invite-card .scan { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage-deep); }
-  .invite-card .url { font-size: 0.7rem; color: var(--ink-soft); margin-top: 0.4rem; }
-
   /* ───────────── FOOTER ───────────── */
   footer {
     border-top: 1px solid var(--rule);
@@ -450,7 +378,6 @@
 <header>
   <svg class="monogram" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
   <nav>
-    <a href="#story">Our Story</a>
     <a href="#details">The Day</a>
     <a href="#rsvp">RSVP</a>
     <a href="#guests">Guests</a>
@@ -493,44 +420,11 @@
   </div>
 </section>
 
-<!-- ── STORY ── -->
-<section id="story">
-  <div class="inner">
-    <div class="sec-head">
-      <span class="num">i.</span>
-      <h2>Our Story</h2>
-      <span class="note">How we got here</span>
-    </div>
-
-    <div class="story-grid">
-      <div class="story-photo-wrap" data-caption="Where it all began.">
-        <img class="story-photo" src="photo3.jpg" alt="">
-      </div>
-      <div class="story-text">
-        <span class="small-caps">The Beginning</span>
-        <h3>It started <em>simply enough</em></h3>
-        <p>[Write a few sentences here about how you two met — where it was, what you remember about it, maybe what your first impression was. Keep it short and honest; two or three sentences is plenty.]</p>
-      </div>
-    </div>
-
-    <div class="story-grid flip">
-      <div class="story-text">
-        <span class="small-caps">The Question</span>
-        <h3>And then, <em>a yes</em></h3>
-        <p>[A few sentences about the proposal — where you were, how it happened, or how it almost didn't go to plan. The imperfect details are usually the best ones.]</p>
-      </div>
-      <div class="story-photo-wrap" data-caption="Moments after the question.">
-        <img class="story-photo" src="photo2.jpg" alt="">
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── DETAILS ── -->
 <section id="details">
   <div class="inner">
     <div class="sec-head">
-      <span class="num">ii.</span>
+      <span class="num">i.</span>
       <h2>The Day</h2>
       <span class="note">Sunday, 14th March 2027</span>
     </div>
@@ -641,7 +535,7 @@
 <section id="guests">
   <div class="inner">
     <div class="sec-head">
-      <span class="num">iii.</span>
+      <span class="num">ii.</span>
       <h2>Guest List</h2>
       <span class="note">Private</span>
     </div>
