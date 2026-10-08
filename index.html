@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jacob & Ashley — 14 March 2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Parisienne&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #2e2e28;
@@ -59,7 +59,7 @@
     border-bottom: 1px solid var(--rule);
   }
   .monogram {
-    width: 44px; height: 44px; flex-shrink: 0;
+    width: 68px; height: 50px; flex-shrink: 0; display: block; overflow: visible;
   }
   header nav { display: flex; gap: 2.2rem; }
   header nav a {
@@ -391,7 +391,7 @@
     padding: 3.5rem 2.5rem 3rem;
     text-align: center;
   }
-  footer .monogram { width: 54px; height: 54px; margin: 0 auto 1.2rem; }
+  footer .monogram { width: 96px; height: 71px; margin: 0 auto 1rem; overflow: visible; }
   footer p { font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.1em; }
   footer .serif { font-size: 1.15rem; font-style: italic; color: var(--ink); margin-bottom: 0.3rem; }
 
@@ -417,11 +417,9 @@
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <g id="ja-monogram">
-      <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1.4"/>
-      <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
-      <text x="32" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">J</text>
-      <text x="50" y="66" font-family="Libre Caslon Text, serif" font-size="20" fill="currentColor" text-anchor="middle" opacity="0.65">&amp;</text>
-      <text x="68" y="60" font-family="Libre Caslon Text, serif" font-size="38" fill="currentColor" text-anchor="middle" font-style="italic">A</text>
+      <text x="50" y="44" dominant-baseline="central" text-anchor="middle" font-family="Parisienne, cursive" font-size="36" fill="currentColor">J<tspan fill="var(--brass)" font-size="24" dx="2">&amp;</tspan><tspan dx="2">A</tspan></text>
+      <line x1="24" y1="73" x2="76" y2="73" stroke="var(--brass)" stroke-width="1.1"/>
+      <circle cx="50" cy="73" r="1.7" fill="var(--brass)"/>
     </g>
   </defs>
 </svg>
@@ -430,7 +428,7 @@
 
 <!-- ── HEADER ── -->
 <header>
-  <svg class="monogram" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
+  <svg class="monogram" viewBox="0 10 100 74" style="color:var(--sage-deep)" role="img" aria-label="J and A"><use href="#ja-monogram"/></svg>
   <nav>
     <a href="#details">The Day</a>
     <a href="#rsvp">RSVP</a>
@@ -620,7 +618,7 @@
 
 <!-- ── FOOTER ── -->
 <footer>
-  <svg class="monogram" viewBox="0 0 100 100" style="color:var(--sage-deep)"><use href="#ja-monogram"/></svg>
+  <svg class="monogram" viewBox="0 10 100 74" style="color:var(--sage-deep)" role="img" aria-label="J and A"><use href="#ja-monogram"/></svg>
   <p class="serif">See you there.</p>
   <p>Regina Coeli &amp; Doltone House · 14th March 2027</p>
 </footer>
