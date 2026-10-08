@@ -263,6 +263,58 @@
   .rsvp-done h3 { font-size: 1.8rem; margin-bottom: 0.6rem; }
   .rsvp-done p { color: var(--ink-soft); }
 
+  /* name finder */
+  .finder-results { border-top: 1px solid var(--rule); margin-top: 0.4rem; }
+  .finder-results:empty { display: none; }
+  .finder-result {
+    display: block; width: 100%; text-align: left;
+    background: none; border: none; border-bottom: 1px solid var(--rule);
+    padding: 0.85rem 0.3rem; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 0.98rem; color: var(--ink);
+    transition: background 0.2s;
+  }
+  .finder-result:hover, .finder-result:focus-visible { background: rgba(110,134,102,0.07); outline: none; }
+  .finder-result strong { font-weight: 500; }
+  .finder-result small { display: block; color: var(--ink-soft); font-size: 0.8rem; margin-top: 0.1rem; }
+  .finder-hint { font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.9rem; }
+
+  .party-head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  .party-head h3 { font-size: 1.45rem; font-weight: 500; }
+  .link-btn {
+    background: none; border: none; cursor: pointer; white-space: nowrap;
+    font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--sage-deep);
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  .party-sub { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 1rem; }
+  .person-row { padding: 0.95rem 0; border-bottom: 1px solid var(--rule); }
+  .person-row:first-child { border-top: 1px solid var(--rule); }
+  .person-row .pname { font-weight: 500; margin-bottom: 0.55rem; }
+  .person-row .pname em { font-weight: 300; color: var(--ink-soft); font-style: normal; font-size: 0.85rem; }
+  .choice { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .choice label {
+    padding: 0.5rem 1.05rem; border: 1px solid var(--rule); cursor: pointer;
+    font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;
+    color: var(--ink-soft); background: transparent; transition: all 0.2s;
+  }
+  .choice label:hover { border-color: var(--ink-soft); }
+  .choice input:checked + label.yes { background: var(--sage-deep); border-color: var(--sage-deep); color: var(--paper); }
+  .choice input:checked + label.no { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .choice input:focus-visible + label { outline: 2px solid var(--sage); outline-offset: 2px; }
+  .plusone-name { display: none; margin-top: 0.7rem; }
+  .plusone-name.show { display: block; }
+  .plusone-name input {
+    width: 100%; padding: 0.6rem 0.2rem; border: none; border-bottom: 1px solid var(--rule);
+    background: transparent; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--ink);
+    outline: none; border-radius: 0;
+  }
+  .plusone-name input:focus { border-bottom-color: var(--sage); }
+  .person-row.missing .choice label { border-color: #c68d80; }
+  #rsvp-form .frow:first-of-type { margin-top: 1.6rem; }
+
   @media (max-width: 780px) {
     .rsvp-wrap { grid-template-columns: 1fr; }
     .rsvp-side { min-height: 300px; }
@@ -487,33 +539,29 @@
       <div class="rsvp-form-side">
         <span class="small-caps">Kindly reply by 14th December 2026</span>
         <h2>RSVP</h2>
-        <p class="deadline">One reply per household is fine — just tell us how many of you are coming.</p>
+        <p class="deadline">Search for your name to find your invitation. You can reply for everyone on it.</p>
 
-        <form id="rsvp-form">
+        <!-- step 1: find your invitation -->
+        <div id="rsvp-find">
           <div class="frow">
-            <label for="r-name">Name</label>
-            <input type="text" id="r-name" required autocomplete="name">
+            <label for="r-search">Your name</label>
+            <input type="text" id="r-search" autocomplete="off" spellcheck="false" placeholder="Start typing your first or last name">
           </div>
+          <div class="finder-results" id="r-results"></div>
+          <p class="finder-hint" id="r-hint">Type at least three letters.</p>
+        </div>
+
+        <!-- step 2: reply for each invited person -->
+        <form id="rsvp-form" style="display:none;" novalidate>
+          <div class="party-head">
+            <h3 id="r-party-name"></h3>
+            <button type="button" class="link-btn" onclick="resetFinder()">Not you?</button>
+          </div>
+          <p class="party-sub">Let us know who can make it.</p>
+          <div id="r-people"></div>
           <div class="frow">
             <label for="r-email">Email</label>
             <input type="email" id="r-email" autocomplete="email">
-          </div>
-          <div class="frow">
-            <label for="r-attending">Will you be there?</label>
-            <select id="r-attending" required>
-              <option value=""></option>
-              <option value="yes">Wouldn't miss it</option>
-              <option value="no">Sadly, can't make it</option>
-            </select>
-          </div>
-          <div class="frow">
-            <label for="r-guests">How many of you?</label>
-            <select id="r-guests">
-              <option value="1">Just me</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
           </div>
           <div class="frow">
             <label for="r-notes">Dietaries or anything we should know</label>
@@ -524,7 +572,7 @@
 
         <div class="rsvp-done" id="rsvp-done">
           <h3>Thank you.</h3>
-          <p>We've got your reply — see you on the day.<br>— J &amp; A</p>
+          <p id="rsvp-done-msg">We've got your reply — see you on the day.<br>— J &amp; A</p>
         </div>
       </div>
     </div>
@@ -589,6 +637,116 @@
 </footer>
 
 <script>
+/* ═══════════════════════════════════════════════════════════════
+   INVITATIONS — edit this list.
+   One entry per invitation (household). Guests can only reply
+   for the names listed on their own invitation.
+
+   household : how the invitation shows in search results
+   guests    : each invited person, written as you'd like to see
+               them in RSVP replies
+   aka       : (optional) other names people might search for
+   "+1"      : (optional) gives that invitation a plus-one seat
+   ═══════════════════════════════════════════════════════════════ */
+const INVITATIONS = [
+  // ── The couple
+  { household: "Jacob Blundell & Ashley Velovski", guests: ["Jacob Blundell", "Ashley Velovski"] },
+
+  // ── Ashley's side
+  { household: "The Velovski Family", guests: ["Ryan Velovski", "David Velovski", "Mum Velovski", "Dad Velovski"] },
+  { household: "Danica & Tony Velovski", guests: ["Danica Velovski", "Tony Velovski"], aka: ["Metodija"] },
+  { household: "Zivka & Boijce Apostolovski", guests: ["Zivka Apostolovski", "Boijce Apostolovski"] },
+  { household: "Lea & Tony Dimovski", guests: ["Lea Dimovski", "Tony Dimovski"] },
+  { household: "Anita & Vlade Rostankovski & family", guests: ["Anita Rostankovski", "Vlade Rostankovski", "Alexander Rostankovski", "Emily Rostankovski", "Brendan Rostankovski"] },
+  { household: "Amelia Rizakos", guests: ["Amelia Rizakos"] },
+  { household: "Mirce Rostankovski", guests: ["Mirce Rostankovski"] },
+  { household: "Kevin & Betty Velovski & family", guests: ["Kevin Velovski", "Betty Velovski", "Monique Velovski", "Andrew Velovski"] },
+  { household: "Borce & Nancy Bubevski & family", guests: ["Borce Bubevski", "Nancy Bubevski", "Isabelle Bubevski", "Matthew Bubevski", "Christian Bubevski"] },
+  { household: "Sue & Chris Velovski", guests: ["Sue Velovski", "Chris Velovski"] },
+  { household: "Mary & Robert Rizanovski & family", guests: ["Mary Rizanovski", "Robert Rizanovski", "Caitlin Rizanovski", "Terry Rizanovski", "Gemma Rizanovski", "Yanni Rizanovski"] },
+  { household: "Rosa & Vic Sturevski", guests: ["Rosa Sturevski", "Vic Sturevski"] },
+  { household: "James & Daniella Sturevski & family", guests: ["James Sturevski", "Daniella Sturevski", "Alexander Sturevski", "Jordan Sturevski"] },
+  { household: "Jessica & Camilo Uzabeaga & family", guests: ["Jessica Uzabeaga", "Camilo Uzabeaga", "Ivy Uzabeaga", "Roman Uzabeaga", "Leona Uzabeaga"] },
+  { household: "Peter & Lydia Atanasovski", guests: ["Peter Atanasovski", "Lydia Atanasovski"] },
+  { household: "Michael & Betty Opacic & family", guests: ["Michael Opacic", "Betty Opacic", "Rebecca Opacic", "Luke Opacic"] },
+  { household: "Robert & Suzzana Bozinovski & family", guests: ["Robert Bozinovski", "Suzzana Bozinovski", "Tamara Bozinovski", "Phillip Bozinovski", "Timothy Bozinovski"] },
+  { household: "Dianna & Rob Kozarovski & family", guests: ["Dianna Kozarovski", "Rob Kozarovski", "Andrew Kozarovski", "Melanie Kozarovski"] },
+  { household: "Jaz & Steve Nikolovski & family", guests: ["Jaz Nikolovski", "Steve Nikolovski", "Danny Nikolovski", "Katia Nikolovski", "Emily Nikolovski"] },
+  { household: "Kim & Anton Magdic & family", guests: ["Kim Magdic", "Anton Magdic", "Kristjan Magdic", "Charlie Magdic", "Penelope Magdic"] },
+  { household: "Alex & Zoe Atanasovski", guests: ["Alex Atanasovski", "Zoe Atanasovski"] },
+  { household: "Natasha & Stefan Trajkovski & family", guests: ["Natasha Trajkovski", "Stefan Trajkovski", "Sofia Trajkovski", "Amelia Trajkovski", "Daniel Trajkovski"] },
+  { household: "Venessa & Toni Bozinovski & family", guests: ["Venessa Bozinovski", "Toni Bozinovski", "Lauren Bozinovski", "Mark Bozinovski"] },
+  { household: "Todd & Jeramie Dimovski & family", guests: ["Todd Dimovski", "Jeramie Dimovski", "Isaac Dimovski", "Jacob Dimovski"] },
+  { household: "Daniel & Annalise Dimovski", guests: ["Daniel Dimovski", "Annalise Dimovski"] },
+  { household: "Jarod & Lauren Dimovski", guests: ["Jarod Dimovski", "Lauren Dimovski"] },
+  { household: "Zoran Piggsy", guests: ["Zoran Piggsy"] },
+  { household: "Nick & Jenny Nikolovski", guests: ["Nick Nikolovski", "Jenny Nikolovski"] },
+  { household: "Steven & Natasha Bozinovski & family", guests: ["Steven Bozinovski", "Natasha Bozinovski", "Max Bozinovski", "Lucas Bozinovski", "Violet Bozinovski"] },
+  { household: "Nick & Nicole Bozinovski & family", guests: ["Nick Bozinovski", "Nicole Bozinovski", "Stephanie Bozinovski", "Alivia Bozinovski"] },
+  { household: "Jackie & Tas Jovanovski & family", guests: ["Jackie Jovanovski", "Tas Jovanovski", "Kristopher Jovanovski", "Isabella Jovanovski", "Michael Jovanovski", "Cassie Jovanovski"] },
+  { household: "Kathy, Rick, Tyler & Alyssa", guests: ["Kathy", "Rick", "Tyler", "Alyssa"] },
+  { household: "Tony & Sonya Gorgovski & family", guests: ["Tony Gorgovski", "Sonya Gorgovski", "Phillip Gorgovski", "Angelina Gorgovski"] },
+  { household: "Tony & Katerina Patrulovski & family", guests: ["Tony Patrulovski", "Katerina Patrulovski", "Vanessa Patrulovski", "Cassandra Patrulovski"] },
+  { household: "Dragan & Lena Jurakovski", guests: ["Dragan Jurakovski", "Lena Jurakovski"] },
+  { household: "Johnny & Brendan Jurakovski & family", guests: ["Johnny Jurakovski", "Brendan Jurakovski", "Andrew Jurakovski"] },
+  { household: "Magda & Zivko Vasilevski", guests: ["Magda Vasilevski", "Zivko Vasilevski"] },
+  { household: "Nofka & Chris Ognenovski & family", guests: ["Nofka Ognenovski", "Chris Ognenovski", "Nancy Ognenovski"] },
+  { household: "Steven & Nicole Ognenovski", guests: ["Steven Ognenovski", "Nicole Ognenovski"] },
+  { household: "Peter & Jana Necovski", guests: ["Peter Necovski", "Jana Necovski"] },
+  { household: "Anica & Peco Ognenovski", guests: ["Anica Ognenovski", "Peco Ognenovski"] },
+  { household: "Anica & Goce Ognenovski", guests: ["Anica Ognenovski", "Goce Ognenovski"] },
+  { household: "Domrica Bubevski", guests: ["Domrica Bubevski"] },
+  { household: "Borrice Rizanovski", guests: ["Borrice Rizanovski"] },
+  { household: "George Tanevski", guests: ["George Tanevski"] },
+  { household: "Andrea Perestrelo", guests: ["Andrea Perestrelo"] },
+  { household: "Rebecca Cusack", guests: ["Rebecca Cusack"] },
+  { household: "Jessica Broudou", guests: ["Jessica Broudou"] },
+  { household: "Tania Abi-Arraj", guests: ["Tania Abi-Arraj"] },
+  { household: "Christina Vellelis", guests: ["Christina Vellelis"] },
+  { household: "Roula Fanos", guests: ["Roula Fanos"] },
+
+  // ── Jacob's side
+  { household: "David & Lynette Blundell", guests: ["David Blundell", "Lynette Blundell"] },
+  { household: "Adam Blundell & Jade Kessey", guests: ["Adam Blundell", "Jade Kessey"] },
+  { household: "Lorraine McCleary", guests: ["Lorraine McCleary"] },
+  { household: "Philippa Murphy", guests: ["Philippa Murphy"] },
+  { household: "Kerrie Angus", guests: ["Kerrie Angus"] },
+  { household: "Lisa & Kel Watson", guests: ["Lisa Watson", "Kel Watson"] },
+  { household: "Maureen Blundell", guests: ["Maureen Blundell"] },
+  { household: "Igo & Laura Fa’aui & family", guests: ["Igo Fa’aui", "Laura Fa’aui", "Amelia Fa’aui", "Charli Fa’aui", "Tori Fa’aui", "Ana Fa’aui"] },
+  { household: "Matthew Watson & Liv Brennan", guests: ["Matthew Watson", "Liv Brennan"] },
+  { household: "Emily Watson & Hayley Elliott", guests: ["Emily Watson", "Hayley Elliott"] },
+  { household: "Dean Blundell & Clare Golja", guests: ["Dean Blundell", "Clare Golja"] },
+  { household: "Joel Blundell & Claire Sandhoff", guests: ["Joel Blundell", "Claire Sandhoff"] },
+  { household: "Alex Blundell & Siena Harland", guests: ["Alex Blundell", "Siena Harland"] },
+  { household: "Peter & Vicki Blundell", guests: ["Peter Blundell", "Vicki Blundell"] },
+  { household: "Mark & Santi Blundell & family", guests: ["Mark Blundell", "Santi Blundell", "Jack Blundell", "Caitlin Blundell"] },
+  { household: "Michael Blundell", guests: ["Michael Blundell"] },
+  { household: "Luke Blundell & Helen Boyd & family", guests: ["Luke Blundell", "Helen Boyd", "Hamish Blundell"] },
+  { household: "Peter Talite & Maddison Davis & family", guests: ["Peter Talite", "Maddison Davis", "Matilda Talite", "Evie Davis"], aka: ["Maddie"] },
+  { household: "Maddy & Gavin Parkinson & family", guests: ["Maddy Parkinson", "Gavin Parkinson", "Layne Parkinson", "Remi Parkinson"] },
+  { household: "Matthew Gwynne & Bella Vassallo", guests: ["Matthew Gwynne", "Bella Vassallo"] },
+  { household: "Thomas & Emma-Rose Fierro", guests: ["Thomas Fierro", "Emma-Rose Fierro"] },
+  { household: "Jack McCarney & Raquel Gallardo", guests: ["Jack McCarney", "Raquel Gallardo"] },
+  { household: "Dhanesh Wadhwana & Lara Cush", guests: ["Dhanesh Wadhwana", "Lara Cush"] },
+  { household: "Zac Greenhalgh", guests: ["Zac Greenhalgh"] },
+  { household: "Liam Walz & Alex Knezevic", guests: ["Liam Walz", "Alex Knezevic"] },
+  { household: "Monique Teloniatis", guests: ["Monique Teloniatis"] },
+  { household: "Demi Theodoratos", guests: ["Demi Theodoratos"] },
+  { household: "Amelia Loh", guests: ["Amelia Loh"] },
+  { household: "Annelise Mather", guests: ["Annelise Mather"] },
+  { household: "Tahlia Tolentino", guests: ["Tahlia Tolentino"] },
+  { household: "Anna Di Napoli", guests: ["Anna Di Napoli"] },
+  { household: "Sarah Quirk", guests: ["Sarah Quirk"] },
+  { household: "Madelyn Colquhoun", guests: ["Madelyn Colquhoun"] },
+  { household: "Francine Kannan", guests: ["Francine Kannan"] },
+  { household: "Renee Manea", guests: ["Renee Manea"] },
+  { household: "Jimmy & Audrey Fish & family", guests: ["Jimmy Fish", "Audrey Fish", "Aiobhin Fish"] },
+  { household: "Marty & Vanessa Morris & family", guests: ["Marty Morris", "Vanessa Morris", "Myles Morris"] },
+  { household: "Sarah & Ruston Taylor & family", guests: ["Sarah Taylor", "Ruston Taylor", "Oliver Taylor"] },
+  { household: "Vicki Jones", guests: ["Vicki Jones"] },
+];
+
 /* ── countdown ── */
 function tick() {
   const wedding = new Date('2027-03-14T12:30:00');
@@ -712,15 +870,137 @@ function exportCSV() {
   showToast('Exported');
 }
 
+/* ── rsvp: find your invitation ── */
+const isPlusOne = n => n.trim() === '+1';
+function norm(s) {
+  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[’'`\-.]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+// every typed word must be the start of some word on the invitation
+const INDEX = INVITATIONS.map((inv, i) => {
+  const words = new Set();
+  [inv.household, ...inv.guests.filter(g => !isPlusOne(g)), ...(inv.aka || [])]
+    .forEach(s => norm(s).split(' ').forEach(w => w && words.add(w)));
+  return { i, words: [...words] };
+});
+function findInvitations(q) {
+  const terms = norm(q).split(' ').filter(Boolean);
+  if (!terms.length) return [];
+  return INDEX.filter(e => terms.every(t => e.words.some(w => w.startsWith(t))))
+              .slice(0, 6).map(e => e.i);
+}
+function describeGuests(inv) {
+  const named = inv.guests.filter(g => !isPlusOne(g));
+  const extra = inv.guests.length - named.length;
+  return named.join(', ') + (extra ? ' + guest' : '');
+}
+
+let selectedInv = null;
+const searchEl = document.getElementById('r-search');
+const resultsEl = document.getElementById('r-results');
+const hintEl = document.getElementById('r-hint');
+
+function renderResults() {
+  const q = searchEl.value;
+  resultsEl.innerHTML = '';
+  if (norm(q).replace(/ /g, '').length < 3) {
+    hintEl.textContent = 'Type at least three letters.';
+    hintEl.style.display = 'block';
+    return [];
+  }
+  const hits = findInvitations(q);
+  if (!hits.length) {
+    hintEl.innerHTML = 'We couldn’t find that name. Try just your first or last name as it would appear on your invitation. Still stuck? Get in touch with Jacob or Ashley.';
+    hintEl.style.display = 'block';
+    return hits;
+  }
+  hintEl.style.display = 'none';
+  hits.forEach(i => {
+    const inv = INVITATIONS[i];
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'finder-result';
+    b.innerHTML = `<strong>${escHtml(inv.household)}</strong><small>${escHtml(describeGuests(inv))}</small>`;
+    b.onclick = () => selectInvitation(i);
+    resultsEl.appendChild(b);
+  });
+  return hits;
+}
+searchEl.addEventListener('input', renderResults);
+searchEl.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const hits = renderResults();
+  if (hits.length === 1) selectInvitation(hits[0]);
+  else if (hits.length) resultsEl.querySelector('button').focus();
+});
+
+function selectInvitation(i) {
+  selectedInv = INVITATIONS[i];
+  document.getElementById('r-party-name').textContent = selectedInv.household;
+  const host = document.getElementById('r-people');
+  host.innerHTML = '';
+  selectedInv.guests.forEach((g, n) => {
+    const plus = isPlusOne(g);
+    const row = document.createElement('div');
+    row.className = 'person-row';
+    row.dataset.idx = n;
+    row.innerHTML = `
+      <p class="pname">${plus ? 'Your guest <em>(plus-one)</em>' : escHtml(g)}</p>
+      <div class="choice">
+        <input type="radio" name="p${n}" id="p${n}y" value="yes">
+        <label for="p${n}y" class="yes">Attending</label>
+        <input type="radio" name="p${n}" id="p${n}n" value="no">
+        <label for="p${n}n" class="no">${plus ? 'Not bringing a guest' : 'Can’t make it'}</label>
+      </div>
+      ${plus ? `<div class="plusone-name" id="p${n}name-wrap">
+        <input type="text" id="p${n}name" placeholder="Their full name" autocomplete="off">
+      </div>` : ''}`;
+    row.querySelectorAll('input[type=radio]').forEach(r => r.addEventListener('change', () => {
+      row.classList.remove('missing');
+      if (plus) document.getElementById(`p${n}name-wrap`).classList.toggle('show', r.value === 'yes' && r.checked);
+    }));
+    host.appendChild(row);
+  });
+  document.getElementById('rsvp-find').style.display = 'none';
+  document.getElementById('rsvp-form').style.display = 'block';
+  document.getElementById('rsvp-form').querySelector('input[type=radio]')?.focus({ preventScroll: true });
+}
+
+function resetFinder() {
+  selectedInv = null;
+  document.getElementById('rsvp-form').reset();
+  document.getElementById('rsvp-form').style.display = 'none';
+  document.getElementById('rsvp-find').style.display = 'block';
+  searchEl.value = '';
+  renderResults();
+  searchEl.focus();
+}
+
 /* ── rsvp → formspree ── */
 document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const name      = document.getElementById('r-name').value.trim();
-  const email     = document.getElementById('r-email').value.trim();
-  const attending = document.getElementById('r-attending').value;
-  const guests    = document.getElementById('r-guests').value;
-  const notes     = document.getElementById('r-notes').value.trim();
-  if (!attending) { showToast('Let us know if you can make it'); return; }
+  if (!selectedInv) return;
+  const email = document.getElementById('r-email').value.trim();
+  const notes = document.getElementById('r-notes').value.trim();
+
+  const coming = [], notComing = [];
+  let missing = false, plusOneName = '';
+  selectedInv.guests.forEach((g, n) => {
+    const row = document.querySelector(`.person-row[data-idx="${n}"]`);
+    const pick = document.querySelector(`input[name="p${n}"]:checked`);
+    if (!pick) { row.classList.add('missing'); missing = true; return; }
+    if (isPlusOne(g)) {
+      if (pick.value === 'yes') {
+        plusOneName = document.getElementById(`p${n}name`).value.trim();
+        if (!plusOneName) { row.classList.add('missing'); missing = true; return; }
+        coming.push(plusOneName + ' (plus-one)');
+      }
+    } else {
+      (pick.value === 'yes' ? coming : notComing).push(g);
+    }
+  });
+  if (missing) { showToast('Please answer for everyone on the invitation'); return; }
 
   const btn = this.querySelector('button[type="submit"]');
   btn.textContent = 'Sending…'; btn.disabled = true;
@@ -730,15 +1010,20 @@ document.getElementById('rsvp-form').addEventListener('submit', async function(e
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name,
+        _subject: `RSVP: ${selectedInv.household} (${coming.length} attending)`,
+        invitation: selectedInv.household,
+        attending: coming.length ? coming.join(', ') : 'Nobody',
+        not_attending: notComing.length ? notComing.join(', ') : 'Nobody',
+        number_attending: coming.length,
         email: email || 'Not provided',
-        attending: attending === 'yes' ? 'Attending' : 'Declined',
-        party_size: guests,
         dietary_notes: notes || 'None'
       })
     });
     if (!res.ok) throw new Error();
-    document.getElementById('rsvp-form').style.display = 'none';
+    document.getElementById('rsvp-done-msg').innerHTML = coming.length
+      ? 'We’ve got your reply. See you on the day.<br>— J &amp; A'
+      : 'Sorry you can’t make it, and thanks for letting us know.<br>— J &amp; A';
+    this.style.display = 'none';
     document.getElementById('rsvp-done').style.display = 'block';
   } catch(err) {
     btn.textContent = 'Send reply'; btn.disabled = false;
